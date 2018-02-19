@@ -6,6 +6,7 @@
 */
 
 #include "Parsing.hpp"
+#include "../../Include/IComponent.hpp"
 
 nts::Parsing::Parsing(std::string FileName) : _FileName(
 	FileName)
@@ -24,12 +25,12 @@ void nts::Parsing::ParseArgument()
 	//}
 }
 
-/*std::map<std::string *, nts::IComponent> Parsing::GetMapInfoFile()
+/*std::map<std::string *, nts::IComponent> nts::Parsing::GetMapInfoFile()
 {
 	return (_MapInfoFile);
 }*/
 
-std::string nts::Parsing::DelSpaceAndTab(std::string Line)
+void nts::Parsing::DelSpaceAndTab(std::string &Line)
 {
 	std::size_t pos = Line.find("\t");
 	while (pos != std::string::npos) {
@@ -46,17 +47,15 @@ std::string nts::Parsing::DelSpaceAndTab(std::string Line)
 		Line.erase(0, 1);
 		pos = Line.find(" ");
 	}
-	return (Line);
 }
 
-std::string nts::Parsing::DelComment(std::string Line)
+void nts::Parsing::DelComment(std::string &Line)
 {
 	std::size_t PosComment = Line.find("#");
 
 	if (!PosComment) {
 		Line.erase(PosComment, (Line.size() - PosComment));
 	}
-	return (Line);
 }
 
 int nts::Parsing::VerifChipset(std::string Line)
@@ -79,13 +78,13 @@ int nts::Parsing::VerifLink(std::string Line)
 
 	if (!LinksIsOk) {
 		_PosInFile = 2;
-		_ChipsetInFile = true;
+		_LinkInFile = true;
 		ret = -1;
 	}
 	return (ret);
 }
 
-std::string nts::Parsing::DefineType(std::string Line)
+void nts::Parsing::DefineType(std::string &Line)
 {
 	std::vector <std::string> VectorType{"input", "output", "clock", "true",
 		"false", "2716", "4001", "4008", "4011", "4013", "4017", "4030",
@@ -98,7 +97,7 @@ std::string nts::Parsing::DefineType(std::string Line)
 			std::size_t SizeType = VectorType[i].size();
 			Line.erase(PosType, SizeType);
 			_Type = VectorType[i];
-			return (Line);
+			return ;
 		}
 	}
 	throw ErrorParsing("Chipset type is unknown : ", Line);
@@ -113,9 +112,9 @@ int nts::Parsing::VerifUniqueName(std::string Line)
 	return (0);
 }
 
-void nts::Parsing::DefineName(std::string Line)
+void nts::Parsing::DefineName(std::string &Line)
 {
-	Line = DelSpaceAndTab(Line);
+	DelSpaceAndTab(Line);
 	if (Line == "")
 		throw ErrorParsing("Error no name specified for the type : ",
 			_Type);
@@ -124,23 +123,27 @@ void nts::Parsing::DefineName(std::string Line)
 		if (ret == -1)
 			throw ErrorParsing("Multiple definition name : ", Line);
 		_Name = Line;
-		//_AllName.push_back(Line);
+		_AllName.push_back(Line);
 	}
 }
 
-std::string nts::Parsing::DefineValue(std::string Line)
+void nts::Parsing::DefineValue(std::string &Line)
 {
 	int FirstPos = Line.find("(");
 	int SecondPos = Line.find(")");
-	int check = Line.find_last_of("(");
+	int CheckFirst = Line.find_last_of("(");
+	int CheckSecond = Line.find_last_of(")");
 
-	if (check != FirstPos)
-		throw ErrorParsing("To many value :", Line);
+	if (FirstPos + 1 == SecondPos)
+		throw ErrorParsing("Variable need value : ", Line);
+	if (CheckFirst != FirstPos || CheckSecond != SecondPos)
+		throw ErrorParsing("To many value : ", Line);
 	if (FirstPos != -1 && SecondPos != -1) {
 		_Value = Line.substr(FirstPos + 1, 1);
 		Line.erase(FirstPos, SecondPos);
 	}
-	return (Line);
+	if (_Value != "1" && _Value != "0" && _Value != "")
+		throw ErrorParsing("Value is 0 or 1 not ", _Value);
 }
 
 /*void nts::Parsing::SetMapInfo()
@@ -150,8 +153,8 @@ std::string nts::Parsing::DefineValue(std::string Line)
 
 void nts::Parsing::StockChipset(std::string Line)
 {
-	Line = DefineType(Line);
-	Line = DefineValue(Line);
+	DefineType(Line);
+	DefineValue(Line);
 	if (_Type == "output")
 		_Value = "0";
 	DefineName(Line);
@@ -171,12 +174,12 @@ void nts::Parsing::ParseLine(std::string Line)
 	int ret = 0;
 
 	DelComment(Line);
-	Line = DelSpaceAndTab(Line);
+	DelSpaceAndTab(Line);
 	if (Line == "")
 		return;
 	ret = VerifLink(Line);
-	/*if (_PosInFile == 2 && ret == 0)
-		abort();*/
+	//if (_PosInFile == 2 && ret == 0)
+		//StockLinks(Line);
 	ret = VerifChipset(Line);
 	if (_PosInFile == 1 && ret == 0)
 		StockChipset(Line);

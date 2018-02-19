@@ -15,36 +15,57 @@
 
 namespace nts {
 	class Parsing {
-		public:
+	public:
 		Parsing(std::string FileName);
 		~Parsing();
+
+		//getteur
+		std::string GetNameFile();
+		//std::map<std::string *, nts::IComponent> GetMapInfoFile();
+
+		//parsing
 		void ParseFile();
+		void ParseArgument();
 		void ParseLine(std::string Line);
-		int VerifChipset(std::string Line);
-		int VerifLink(std::string Line);
+
 		void StockChipset(std::string Line);
-		void DefineName(std::string Line);
+		//delete space and comment
+		void DelComment(std::string &Line);
+
+		void DelSpaceAndTab(std::string &Line);
+		//define type name value
+		void DefineName(std::string &Line);
+		void DefineType(std::string &Line);
+		void DefineValue(std::string &Line);
+
+		//verification name Link chipset
 		void ChipsetsOrLinksIsNotInFile();
+		int VerifLink(std::string Line);
+		int VerifChipset(std::string Line);
 		int VerifUniqueName(std::string Line);
-		//void SetMapInfo();
+
 		//std::map<std::string *, nts::IComponent> GetMapInfoFile();
 		//std::map<std::string, std::string> Pin;
-		std::string GetNameFile();
-		std::string DelComment(std::string);
-		std::string DefineType(std::string Line);
-		std::string DefineValue(std::string Line);
-		std::string DelSpaceAndTab(std::string Line);
-		void ParseArgument();
+		//void SetMapInfo();
 
-		private:
+	private:
+		//vecteur pour l'ensemble des noms deja renseigné
 		std::vector<std::string> _AllName;
+
+		//nom du fichier
 		std::string _FileName;
+
+		//variable type name value
 		std::string _Type;
 		std::string _Name;
 		std::string _Value;
+
+		//chipset and link section
 		bool _ChipsetInFile;
 		bool _LinkInFile;
 		//std::map<std::string *, nts::IComponent> _MapInfoFile;
+
+		//Section chipsets = 1 et section link = 2
 		short _PosInFile;
 	};
 }
