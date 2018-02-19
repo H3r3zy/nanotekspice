@@ -46,7 +46,7 @@ static void testComponent(
 	component.setLink(15, enable, 1);
 
 
-	cr_assert_eq(component.compute(14), expected1, "Assert%i: expected %s\n", assertNumber, expected1);
+	cr_assert_eq(component.compute(14), expected1, "Assert%i: expected %d\n", assertNumber, expected1);
 	assertNumber++;
 }
 
