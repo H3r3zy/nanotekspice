@@ -21,5 +21,8 @@ int main(int ac, char **av)
 	} catch (nts::ErrorParsing const &message) {
 		std::cout << message.GetMessage() << message.GetIndication()
 			<< std::endl;
+		return (1);
 	}
+	// take argument
+	return (0);
 }

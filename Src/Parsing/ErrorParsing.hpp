@@ -14,8 +14,10 @@
 namespace nts {
 	class ErrorParsing : public std::exception {
 		public:
-		ErrorParsing(const std::string &message, const std::string &indication);
-		~ErrorParsing() throw() ;
+		ErrorParsing(const std::string &message,
+			const std::string &indication);
+		ErrorParsing(nts::ErrorParsing const &) = default;
+		~ErrorParsing();
 		std::string const &GetMessage() const;
 		std::string const &GetIndication() const;
 		private:
