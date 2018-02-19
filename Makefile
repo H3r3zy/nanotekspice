@@ -12,14 +12,34 @@ CC	= g++
 
 RM	= rm -f
 
-SRCS	= Src/Parsing/Main.cpp		\
-	  Src/Parsing/Parsing.cpp	\
-	  Src/Parsing/ErrorParsing.cpp
+SRCS	= 	Src/Parsing/Main.cpp		\
+	  	Src/Parsing/Parsing.cpp	\
+	  	Src/Parsing/ErrorParsing.cpp	\
+		Src/Component/AbstractComponent.cpp	\
+		Src/Component/Chipset/CD4008BMS.cpp	\
+		Src/Component/Chipset/CD4011B.cpp	\
+		Src/Component/Chipset/CD4030C.cpp	\
+		Src/Component/Chipset/CD4069UBC.cpp	\
+		Src/Component/Chipset/CD4512B.cpp	\
+		Src/Component/Chipset/CD4514BC.cpp	\
+		Src/Component/Chipset/HCF4081B.cpp	\
+		Src/Component/Chipset/HEF4001B.cpp	\
+		Src/Component/Chipset/HEF4071B.cpp	\
+		Src/Component/Component/AndGate.cpp	\
+		Src/Component/Component/Clock.cpp	\
+		Src/Component/Component/FullAdderComponent.cpp	\
+		Src/Component/Component/Input.cpp	\
+		Src/Component/Component/NandGate.cpp	\
+		Src/Component/Component/NorGate.cpp	\
+		Src/Component/Component/NotGate.cpp	\
+		Src/Component/Component/OrGate.cpp	\
+		Src/Component/Component/RSNorLatchComponent.cpp	\
+		Src/Component/Component/XorGate.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
-CPPFLAGS = -I ./Include
-CPPFLAGS += -std=c++11 -Wall -Wextra -Werror
+CPPFLAGS = -I ./Include -I ./Include/Chipset -I ./Include/Component
+CPPFLAGS += -std=c++11 -Wall -Wextra
 
 all: $(NAME)
 
@@ -34,4 +54,8 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+debug: CPPFLAGS += -ggdb3
+
+debug: re
+
+.PHONY: all clean fclean re debug
