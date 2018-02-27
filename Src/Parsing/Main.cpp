@@ -17,7 +17,7 @@ int main(int ac, char **av)
 		return (1);
 	}
 	try {
-		nts::Parsing P(av[1]);
+		nts::Parsing P(av[1], ac, av);
 	} catch (nts::ErrorParsing const &message) {
 		std::cout << message.GetMessage() << message.GetIndication()
 			<< std::endl;

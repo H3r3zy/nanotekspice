@@ -16,57 +16,51 @@
 namespace nts {
 	class Parsing {
 	public:
-		Parsing(std::string FileName);
+		Parsing(std::string FileName, int ac, char **av);
 		~Parsing();
-
-		//getteur
 		std::string GetNameFile();
 		//std::map<std::string *, nts::IComponent> GetMapInfoFile();
-
-		//parsing
-		void ParseFile();
-		void ParseArgument();
+	private:
+		void ParseFile(void);
+		void ParseArgument(void);
 		void ParseLine(std::string Line);
-
 		void StockChipset(std::string Line);
-		//delete space and comment
+		void StockLinks(std::string &Line);
 		void DelComment(std::string &Line);
-
 		void DelSpaceAndTab(std::string &Line);
-		//define type name value
 		void DefineName(std::string &Line);
 		void DefineType(std::string &Line);
 		void DefineValue(std::string &Line);
-
-		//verification name Link chipset
 		void ChipsetsOrLinksIsNotInFile();
 		int VerifLink(std::string Line);
 		int VerifChipset(std::string Line);
 		int VerifUniqueName(std::string Line);
-
+		void ModifValueWithArg(void);
+		void VerifEmptyArg(void);
+		void VerifEqualArgument(std::string &Arg);
+		std::string StockNameArg(std::string &Arg);
+		std::string StockValueArg(std::string &Arg);
+		int VerifNameExiste(std::string);
+		std::vector<std::string> _AllName;
 		//std::map<std::string *, nts::IComponent> GetMapInfoFile();
 		//std::map<std::string, std::string> Pin;
-		//void SetMapInfo();
-
-	private:
-		//vecteur pour l'ensemble des noms deja renseigné
-		std::vector<std::string> _AllName;
-
-		//nom du fichier
+		void SetMapInfo(void);
+		std::vector<std::string> _NameArg;
+		std::vector<std::string> _ValueArg;
+		std::map<std::string, std::string> _FileMap;
 		std::string _FileName;
-
-		//variable type name value
 		std::string _Type;
 		std::string _Name;
 		std::string _Value;
-
-		//chipset and link section
+		std::vector<std::string> _NameLink;
+		std::vector<std::string> _ValueLink;
 		bool _ChipsetInFile;
 		bool _LinkInFile;
 		//std::map<std::string *, nts::IComponent> _MapInfoFile;
-
-		//Section chipsets = 1 et section link = 2
 		short _PosInFile;
+		int _ac;
+		char **_av;
+
 	};
 }
 #endif //CPP_NANOTEKSPICE_PARSING_HPP

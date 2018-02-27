@@ -8,8 +8,8 @@
 #include "Parsing.hpp"
 #include "../../Include/IComponent.hpp"
 
-nts::Parsing::Parsing(std::string FileName) : _FileName(
-	FileName)
+nts::Parsing::Parsing(std::string FileName, int ac, char **av) : _FileName(
+	FileName), _ac(ac), _av(av)
 {
 	ParseArgument();
 	ParseFile();
@@ -19,10 +19,52 @@ nts::Parsing::~Parsing()
 {
 }
 
+void nts::Parsing::VerifEqualArgument(std::string &Arg)
+{
+	int Equal = Arg.find("=");
+	int PosEqual = Arg.find_last_of("=");
+
+	if (Equal == -1)
+		throw ErrorParsing("Argument need value : ", Arg);
+	if (Equal != PosEqual || (Equal == -1 && PosEqual == -1))
+		throw ErrorParsing("Multi equal is not allowed : ", Arg);
+}
+
+std::string nts::Parsing::StockNameArg(std::string &Arg)
+{
+	int Equal = Arg.find("=");
+
+	std::string Name = Arg.substr(0, Equal);
+	return (Name);
+}
+
+std::string nts::Parsing::StockValueArg(std::string &Arg)
+{
+	int Equal = Arg.find("=");
+
+	std::string Value = Arg.substr(Equal + 1, Arg.size() - (Equal + 1));
+	if (Value != "1" && Value != "0")
+		throw ErrorParsing("Value is 0 or 1 not ", Value);
+	return (Value);
+}
+
 void nts::Parsing::ParseArgument()
 {
-	//for (unsigned int cpt = 1; cpt != _ac; cpt++) {
-	//}
+	int i = 0;
+
+	if (_ac == 2)
+		return;
+	for (int cpt = 2; cpt != _ac; cpt++) {
+		if (_av[cpt] == NULL)
+			return;
+		std::string Arg(_av[cpt]);
+		VerifEqualArgument(Arg);
+		std::string NameArg = StockNameArg(Arg);
+		std::string ValueArg = StockValueArg(Arg);
+		_NameArg.push_back(NameArg);
+		_ValueArg.push_back(ValueArg);
+		i++;
+	}
 }
 
 /*std::map<std::string *, nts::IComponent> nts::Parsing::GetMapInfoFile()
@@ -46,6 +88,13 @@ void nts::Parsing::DelSpaceAndTab(std::string &Line)
 	while (pos == 0) {
 		Line.erase(0, 1);
 		pos = Line.find(" ");
+	}
+	if (_PosInFile == 2) {
+		pos = Line.find_last_of(" ");
+		while (pos + 1 == Line.size()) {
+			Line.erase(pos, 1);
+			pos = Line.find_last_of(" ");
+		}
 	}
 }
 
@@ -97,7 +146,7 @@ void nts::Parsing::DefineType(std::string &Line)
 			std::size_t SizeType = VectorType[i].size();
 			Line.erase(PosType, SizeType);
 			_Type = VectorType[i];
-			return ;
+			return;
 		}
 	}
 	throw ErrorParsing("Chipset type is unknown : ", Line);
@@ -146,10 +195,21 @@ void nts::Parsing::DefineValue(std::string &Line)
 		throw ErrorParsing("Value is 0 or 1 not ", _Value);
 }
 
-/*void nts::Parsing::SetMapInfo()
+void nts::Parsing::SetMapInfo()
 {
 	//_MapInfoFile[_Name] = nts::IComponent::create(_Type, _Value);
-}*/
+}
+
+void nts::Parsing::ModifValueWithArg()
+{
+	for (size_t pos = 0; pos < _NameArg.size(); pos++) {
+		if (_NameArg[pos] == _Name) {
+			_Value = _ValueArg[pos];
+			_NameArg.erase(_NameArg.begin() + pos);
+			_ValueArg.erase(_ValueArg.begin() + pos);
+		}
+	}
+}
 
 void nts::Parsing::StockChipset(std::string Line)
 {
@@ -158,7 +218,11 @@ void nts::Parsing::StockChipset(std::string Line)
 	if (_Type == "output")
 		_Value = "0";
 	DefineName(Line);
-	//SetMapInfo();
+	ModifValueWithArg();
+	if (_Value.empty() && _Type == "input")
+		throw ErrorParsing("Input name need value.", "");
+	SetMapInfo();
+	_FileMap[_Name] = _Type;
 }
 
 void nts::Parsing::ChipsetsOrLinksIsNotInFile()
@@ -167,6 +231,45 @@ void nts::Parsing::ChipsetsOrLinksIsNotInFile()
 		throw ErrorParsing("Chipsets section not in file.", "");
 	if (!_LinkInFile)
 		throw ErrorParsing("Links section not in file.", "");
+}
+
+int nts::Parsing::VerifNameExiste(std::string name)
+{
+	for (unsigned int i = 0; i != _AllName.size(); i++) {
+		if (_AllName[i] == name)
+			return (0);
+	}
+	return (1);
+}
+
+void nts::Parsing::StockLinks(std::string &Line)
+{
+	int PosSpace = Line.find(" ");
+	int PosTab = Line.find("\t");
+
+	if (PosSpace == -1 && PosTab == -1)
+		throw ErrorParsing("Problem delimitation links : ", Line);
+
+	int PosSemicolons = Line.find(":");
+	int SecondPosSemicolons = Line.find_last_of(":");
+
+	if (PosSemicolons == SecondPosSemicolons)
+		throw ErrorParsing("No semicolon delimiter in the line : ",
+			Line);
+
+	std::string name = Line.substr(0, PosSemicolons);
+	if (VerifNameExiste(name) == 1)
+		throw ErrorParsing("Name in section link is unknow : ", name);
+	PosSpace = Line.find(" ");
+	std::string value = Line.substr(PosSemicolons + 1,
+		(PosSpace - 1) - PosSemicolons);
+	_NameLink.push_back(name);
+	_ValueLink.push_back(value);
+	PosSpace = Line.find_last_of(" ");
+	name = Line.substr(PosSpace + 1, SecondPosSemicolons - 1 - PosSpace);
+	value = Line.substr(SecondPosSemicolons + 1, Line.size());
+	_NameLink.push_back(name);
+	_ValueLink.push_back(value);
 }
 
 void nts::Parsing::ParseLine(std::string Line)
@@ -178,13 +281,19 @@ void nts::Parsing::ParseLine(std::string Line)
 	if (Line == "")
 		return;
 	ret = VerifLink(Line);
-	//if (_PosInFile == 2 && ret == 0)
-		//StockLinks(Line);
+	if (_PosInFile == 2 && ret == 0)
+		StockLinks(Line);
 	ret = VerifChipset(Line);
 	if (_PosInFile == 1 && ret == 0)
 		StockChipset(Line);
 }
 
+void nts::Parsing::VerifEmptyArg()
+{
+	if (_NameArg.size() != 0)
+		throw ErrorParsing("Error with the name of argument : ",
+			_NameArg[0]);
+}
 
 void nts::Parsing::ParseFile()
 {
@@ -198,6 +307,11 @@ void nts::Parsing::ParseFile()
 			_Name = "";
 			_Value = "";
 		}
+		/*		for (unsigned int i = 0; i != _ValueLink.size(); i++) {
+					std::cout << "Name = " << _NameLink[i] << " value = " << _ValueLink[i] << std::endl;
+					std::cout << _FileMap[_NameLink[i]] << std::endl;
+				}*/
+		VerifEmptyArg();
 		ChipsetsOrLinksIsNotInFile();
 	} else {
 		throw ErrorParsing("Bad file given as parameter : ", _FileName);
