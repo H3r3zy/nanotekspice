@@ -7,7 +7,7 @@
 
 #include "CD4514BC.hpp"
 
-const std::map<unsigned int, unsigned int> outputInput = {
+const std::map<unsigned int, unsigned int> OUTPUTINPUT = {
 	{11, 0},
 	{9, 1},
 	{10, 2},
@@ -31,16 +31,16 @@ nts::CD4514BC::CD4514BC()
 	_pin_number = 24;
 }
 
-nts::CD4514BC::~CD4514BC()
-{
-}
-
 nts::CD4514BC::CD4514BC(nts::CD4514BC const &toCopy)
 {
+	(void) toCopy;
+	delete this;
 }
 
 nts::CD4514BC &nts::CD4514BC::operator=(nts::CD4514BC const &toCopy)
 {
+	(void) toCopy;
+	delete this;
 	return *this;
 }
 
@@ -66,7 +66,7 @@ nts::Tristate nts::CD4514BC::compute(size_t pin)
 		} else {
 			std::string str;
 			str += tristate2Value(i4) += tristate2Value(i3) += tristate2Value(i2) += tristate2Value(i1);
-			char res = truth.at(str)[outputInput.at(pin)];
+			char res = truth.at(str)[OUTPUTINPUT.at(pin)];
 			_res = value2Tristate(res);
 		}
 	} else {
@@ -78,22 +78,4 @@ nts::Tristate nts::CD4514BC::compute(size_t pin)
 void nts::CD4514BC::dump() const
 {
 	std::cout << "CD4514BC Chipset" << std::endl;
-	try {
-		std::cout << "vvv Input 1 vvv" << std::endl;
-		if (_pins.at(1))
-			_pins.at(1)->dump();
-		std::cout << "vvv Input 2 vvv" << std::endl;
-		if (_pins.at(2))
-			_pins.at(2)->dump();
-	} catch(std::out_of_range &e) {
-
-	}
-	std::cout << "|=> output: ";
-	if (_res == nts::UNDEFINED)
-		std::cout << "Undefined";
-	if (_res == nts::FALSE)
-		std::cout << "False";
-	if (_res == nts::TRUE)
-		std::cout << "True";
-	std::cout << std::endl;
 }

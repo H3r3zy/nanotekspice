@@ -11,10 +11,6 @@ nts::ErrorParsing::ErrorParsing(const std::string &message, const std::string &i
 {
 }
 
-nts::ErrorParsing::~ErrorParsing()
-{
-}
-
 const std::string &nts::ErrorParsing::GetIndication() const
 {
 	return (_Indication);
@@ -24,4 +20,3 @@ const std::string &nts::ErrorParsing::GetMessage() const
 {
 	return (_Message);
 }
-

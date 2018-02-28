@@ -14,15 +14,20 @@ nts::Clock::Clock()
 
 nts::Clock::Clock(nts::Clock const &toCopy)
 {
+	(void) toCopy;
+	delete this;
 }
 
 nts::Clock &nts::Clock::operator=(nts::Clock const &toCopy)
 {
+	(void) toCopy;
+	delete this;
 	return *this;
 }
 
 std::ostream &operator<<(std::ostream &os, nts::Clock const &data)
 {
+	data.dump();
 	return os;
 }
 

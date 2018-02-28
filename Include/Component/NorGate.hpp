@@ -15,7 +15,7 @@ namespace nts {
 	class NorGate : public nts::AbstractComponent {
 	public:
 		// Constructor
-		NorGate();
+		NorGate() = default;
 
 		NorGate(nts::NorGate const &);
 
@@ -30,7 +30,7 @@ namespace nts {
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
 
 	protected:

@@ -17,7 +17,7 @@ namespace nts {
 	class AndGate : public nts::AbstractComponent {
 	public:
 		// Constructor
-		AndGate();
+		AndGate() = default;
 
 		AndGate(nts::AndGate const &);
 
@@ -29,7 +29,7 @@ namespace nts {
 
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
 	};
 }

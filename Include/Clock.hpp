@@ -9,7 +9,6 @@
 #define CPP_NANOTEKSPICE_CLOCK_HPP
 
 #include <iostream>
-#include "IComponent.hpp"
 #include "Input.hpp"
 
 namespace nts {

@@ -21,7 +21,7 @@ namespace nts {
 		CD4514BC(nts::CD4514BC const &);
 
 		// Destructor
-		~CD4514BC() override;
+		~CD4514BC() override = default;
 
 		// Operator
 		CD4514BC &operator=(nts::CD4514BC const &);

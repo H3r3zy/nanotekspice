@@ -13,14 +13,14 @@
 
 namespace nts {
 	class NandGate : public nts::AbstractComponent {
-		public:
+	public:
 		// Constructor
-		NandGate();
+		NandGate() = default;
 
 		NandGate(nts::NandGate const &);
 
 		// Destructor
-		~NandGate() = default;
+		~NandGate() override = default;
 
 		// Operator
 		NandGate &operator=(nts::NandGate const &);
@@ -30,12 +30,12 @@ namespace nts {
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 
 	};
 }

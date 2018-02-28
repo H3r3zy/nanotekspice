@@ -30,7 +30,7 @@ namespace nts {
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
 
 		protected:

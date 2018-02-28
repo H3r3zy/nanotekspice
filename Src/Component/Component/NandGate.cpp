@@ -7,16 +7,16 @@
 
 #include "NandGate.hpp"
 
-nts::NandGate::NandGate()
-{
-}
-
 nts::NandGate::NandGate(nts::NandGate const &toCopy)
 {
+	(void) toCopy;
+	delete this;
 }
 
 nts::NandGate &nts::NandGate::operator=(nts::NandGate const &toCopy)
 {
+	(void) toCopy;
+	delete this;
 	return *this;
 }
 
@@ -47,22 +47,4 @@ nts::Tristate nts::NandGate::compute(size_t pin)
 void nts::NandGate::dump() const
 {
 	std::cout << "Nand Gate" << std::endl;
-	try {
-		std::cout << "vvv Input 1 vvv" << std::endl;
-		if (_pins.at(1))
-			_pins.at(1)->dump();
-		std::cout << "vvv Input 2 vvv" << std::endl;
-		if (_pins.at(2))
-			_pins.at(2)->dump();
-	} catch(std::out_of_range &e) {
-
-	}
-	std::cout << "|=> output: ";
-	if (_res == nts::UNDEFINED)
-		std::cout << "Undefined";
-	if (_res == nts::FALSE)
-		std::cout << "False";
-	if (_res == nts::TRUE)
-		std::cout << "True";
-	std::cout << std::endl;
 }

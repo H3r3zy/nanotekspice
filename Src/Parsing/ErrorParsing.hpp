@@ -17,7 +17,6 @@ namespace nts {
 		ErrorParsing(const std::string &message,
 			const std::string &indication);
 		ErrorParsing(nts::ErrorParsing const &) = default;
-		~ErrorParsing();
 		std::string const &GetMessage() const;
 		std::string const &GetIndication() const;
 		private:
