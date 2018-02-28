@@ -28,8 +28,8 @@ int main(int ac, char **av)
 			std::cout << it->second->compute(1) << std::endl;
 
 		}
-	} catch (nts::ErrorParsing const &message) {
-		std::cout << message.GetMessage() << message.GetIndication()
+	} catch (nts::errorParsing const &message) {
+		std::cout << message.getMessage() << message.getIndication()
 			<< std::endl;
 		return (1);
 	}

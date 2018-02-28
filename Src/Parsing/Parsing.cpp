@@ -6,6 +6,7 @@
 */
 
 #include <unordered_map>
+#include <Parsing/Parsing.hpp>
 #include "AbstractComponent.hpp"
 #include "Parsing.hpp"
 #include "CD4008BMS.hpp"
@@ -21,62 +22,62 @@
 #include "CD4514BC.hpp"
 #include "Output.hpp"
 
-static const std::string *AUTHORIZED_VALUE = new std::string("01");
-static const std::vector <std::string> TYPES = {
+static const std::string AUTHORIZED_VALUE("01");
+static const std::vector<std::string> TYPES({
 	"input", "output", "clock", "true", "false", "2716", "4001", "4008",
 	"4011", "4013", "4017", "4030", "4040", "4069", "4071", "4081",
 	"4094", "4503", "4512", "4514",	"i4004", "mk4801"
-};
+});
 
-nts::Parsing::Parsing(std::string const &FileName, int &ac, char **&av) : _FileName(
-	FileName), _ac(ac), _av(av)
+nts::Parsing::Parsing(std::string fileName, int &ac, char **&av) : _fileName(
+	fileName), _ac(ac), _av(av)
 {
-	ParseArgument();
-	ParseFile();
+	parseArgument();
+	parseFile();
 }
 
-void nts::Parsing::VerifEqualArgument(std::string &Arg)
+void nts::Parsing::verifEqualArgument(std::string &arg)
 {
-	unsigned long int Equal = Arg.find('=');
-	unsigned long int PosEqual = Arg.find_last_of('=');
+	unsigned long int equal = arg.find('=');
+	unsigned long int posEqual = arg.find_last_of('=');
 
-	if (Equal == std::string::npos)
-		throw nts::ErrorParsing("Argument need value : ", Arg);
-	if (Equal != PosEqual || (Equal == std::string::npos && PosEqual == std::string::npos))
-		throw nts::ErrorParsing("Multi equal is not allowed : ", Arg);
+	if (equal == std::string::npos)
+		throw nts::errorParsing("Argument need value : ", arg);
+	if (equal != posEqual || (equal == std::string::npos && posEqual == std::string::npos))
+		throw nts::errorParsing("Multi equal is not allowed : ", arg);
 }
 
-std::string nts::Parsing::StockNameArg(std::string &Arg)
+std::string nts::Parsing::stockNameArg(std::string &arg)
 {
-	unsigned long int Equal = Arg.find('=');
+	long unsigned int equal = arg.find('=');
 
-	std::string Name = Arg.substr(0, Equal);
-	return (Name);
+	std::string name = arg.substr(0, equal);
+	return (name);
 }
 
-std::string nts::Parsing::StockValueArg(std::string &Arg)
+std::string nts::Parsing::stockValueArg(std::string &arg)
 {
-	unsigned long int Equal = Arg.find('=');
+	long unsigned int equal = arg.find('=');
 
-	std::string Value = Arg.substr(Equal + 1, Arg.size() - (Equal + 1));
-	if (AUTHORIZED_VALUE->find(Value) == std::string::npos)
-		throw nts::ErrorParsing("Value is 0 or 1 not ", Value);
-	return (Value);
+	std::string value = arg.substr(equal + 1, arg.size() - (equal + 1));
+	if (AUTHORIZED_VALUE.find(value) == std::string::npos)
+		throw nts::errorParsing("Value is 0 or 1 not ", value);
+	return (value);
 }
 
-void nts::Parsing::ParseArgument()
+void nts::Parsing::parseArgument()
 {
 	int i = 0;
 
 	if (_ac == 2)
 		return;
 	for (int cpt = 2; cpt != _ac && _av[cpt]; cpt++) {
-		std::string Arg(_av[cpt]);
-		VerifEqualArgument(Arg);
-		std::string NameArg = StockNameArg(Arg);
-		std::string ValueArg = StockValueArg(Arg);
-		_NameArg.push_back(NameArg);
-		_ValueArg.push_back(ValueArg);
+		std::string arg(_av[cpt]);
+		verifEqualArgument(arg);
+		std::string nameArg = stockNameArg(arg);
+		std::string valueArg = stockValueArg(arg);
+		_nameArg.push_back(nameArg);
+		_valueArg.push_back(valueArg);
 		i++;
 	}
 }
@@ -101,241 +102,259 @@ std::map<std::string, nts::Clock *>& nts::Parsing::getClocks()
 	return _clocks;
 }
 
-void nts::Parsing::DelSpaceAndTab(std::string &Line)
+void nts::Parsing::delSpaceAndTab(std::string &line)
 {
-	std::size_t pos = Line.find('\t');
+	std::size_t pos = line.find('\t');
 	while (pos != std::string::npos) {
-		Line.replace(pos, 1, " ");
-		pos = Line.find('\t', pos);
+		line.replace(pos, 1, " ");
+		pos = line.find('\t', pos);
 	}
-	pos = Line.find("  ");
+	pos = line.find("  ");
 	while (pos != std::string::npos) {
-		Line.replace(pos, 2, " ");
-		pos = Line.find("  ", pos);
+		line.replace(pos, 2, " ");
+		pos = line.find("  ", pos);
 	}
-	pos = Line.find(' ');
+	pos = line.find(' ');
 	while (pos == 0) {
-		Line.erase(0, 1);
-		pos = Line.find(' ');
+		line.erase(0, 1);
+		pos = line.find(' ');
 	}
-	if (_PosInFile == 2) {
-		pos = Line.find_last_of(' ');
-		while (pos + 1 == Line.size()) {
-			Line.erase(pos, 1);
-			pos = Line.find_last_of(' ');
+	if (_posInFile == 2) {
+		pos = line.find_last_of(' ');
+		while (pos + 1 == line.size()) {
+			line.erase(pos, 1);
+			pos = line.find_last_of(' ');
 		}
 	}
 }
 
-void nts::Parsing::DelComment(std::string &Line)
+void nts::Parsing::delComment(std::string &line)
 {
-	std::size_t PosComment = Line.find('#');
+	std::size_t posComment = line.find('#');
 
-	if (!PosComment) {
-		Line.erase(PosComment, (Line.size() - PosComment));
-	}
+	if (!posComment)
+		line.erase(posComment, (line.size() - posComment));
 }
 
-int nts::Parsing::VerifChipset(std::string &Line)
+int nts::Parsing::verifChipset(std::string &line)
 {
 	int ret = 0;
-	std::size_t ChipsetIsOk = Line.find(".chipsets:");
+	std::size_t chipsetIsOk = line.find(".chipsets:");
 
-	if (!ChipsetIsOk) {
-		_PosInFile = 1;
-		_ChipsetInFile = true;
+	if (!chipsetIsOk) {
+		_posInFile = 1;
+		_chipsetInFile = true;
 		ret = -1;
 	}
 	return (ret);
 }
 
-int nts::Parsing::VerifLink(std::string &Line)
+int nts::Parsing::verifLink(std::string &line)
 {
 	int ret = 0;
-	std::size_t LinksIsOk = Line.find(".links:");
+	std::size_t linksIsOk = line.find(".links:");
 
-	if (!LinksIsOk) {
-		_PosInFile = 2;
-		_LinkInFile = true;
+	if (!linksIsOk) {
+		_posInFile = 2;
+		_linkInFile = true;
 		ret = -1;
 	}
 	return (ret);
 }
 
-void nts::Parsing::DefineType(std::string &Line)
+void nts::Parsing::defineType(std::string &line)
 {
 	for (unsigned int i = 0; i != TYPES.size(); i++) {
-		std::size_t PosType = Line.find(TYPES[i]);
-		if (PosType == 0) {
-			std::size_t SizeType = TYPES[i].size();
-			Line.erase(PosType, SizeType);
-			_Type = TYPES[i];
+		std::size_t posType = line.find(TYPES[i]);
+		if (posType == 0) {
+			std::size_t sizeType = TYPES[i].size();
+			line.erase(posType, sizeType);
+			_type = TYPES[i];
 			return;
 		}
 	}
-	throw nts::ErrorParsing("Chipset type is unknown : ", Line);
+	throw nts::errorParsing("Chipset type is unknown : ", line);
 }
 
-void nts::Parsing::DefineName(std::string &Line)
+void nts::Parsing::defineName(std::string &line)
 {
-	DelSpaceAndTab(Line);
-	if (Line.empty())
-		throw nts::ErrorParsing("Error no name specified for the type : ",
-			_Type);
+	delSpaceAndTab(line);
+	if (line.empty())
+		throw nts::errorParsing("Error no name specified for the type : ",
+			_type);
 	else {
-		_Name = Line;
+		_name = line;
 	}
 }
 
-void nts::Parsing::DefineValue(std::string &Line)
+void nts::Parsing::defineValue(std::string &line)
 {
-	unsigned long int FirstPos = Line.find('(');
-	unsigned long int SecondPos = Line.find(')');
-	unsigned long int CheckFirst = Line.find_last_of('(');
-	unsigned long int CheckSecond = Line.find_last_of(')');
+	unsigned long int firstPos = line.find('(');
+	unsigned long int secondPos = line.find(')');
+	unsigned long int checkFirst = line.find_last_of('(');
+	unsigned long int checkSecond = line.find_last_of(')');
 
-	if (FirstPos + 1 == SecondPos)
-		throw nts::ErrorParsing("Variable need value : ", Line);
-	if (CheckFirst != FirstPos || CheckSecond != SecondPos)
-		throw nts::ErrorParsing("To many value : ", Line);
-	if (FirstPos != std::string::npos && SecondPos != std::string::npos) {
-		_Value = Line.substr(FirstPos + 1, 1);
-		Line.erase(FirstPos, SecondPos);
+	if (firstPos + 1 == secondPos)
+		throw nts::errorParsing("Variable need value : ", line);
+	if (checkFirst != firstPos || checkSecond != secondPos)
+		throw nts::errorParsing("To many value : ", line);
+	if (firstPos != -1 && secondPos != -1) {
+		_value = line.substr(firstPos + 1, 1);
+		line.erase(firstPos, secondPos);
 	}
-	if (_Value != "1" && _Value != "0" && !_Value.empty())
-		throw nts::ErrorParsing("Value is 0 or 1 not ", _Value);
+	if (AUTHORIZED_VALUE.find(_value) == std::string::npos && !_value.empty())
+		throw nts::errorParsing("Value is 0 or 1 not ", _value);
 }
 
 void nts::Parsing::setComponent()
 {
 	nts::IComponent *component = nullptr;
 	try {
-		 component = &create(_Type, _Value);
-	} catch(nts::ErrorParsing &e) {
-		throw nts::ErrorParsing(e.GetMessage(), e.GetIndication());
+		 component = &create(_type, _value);
+	} catch(nts::errorParsing &e) {
+		throw nts::errorParsing(e.getMessage(), e.getIndication());
 	}
-	std::cout << _Name.data() << std::endl;
-	if (_components.find(_Name) != _components.end()) {
-		throw nts::ErrorParsing("Multiple definition of ", _Name);
+	std::cout << _name.data() << std::endl;
+	if (_components.find(_name) != _components.end()) {
+		throw nts::errorParsing("Multiple definition of ", _name);
 	}
-	_components.insert(std::pair<std::string, nts::IComponent *>(_Name, component));
+	_components.insert(std::pair<std::string, nts::IComponent *>(_name, component));
 
-	if (_Type == "clock")
-		_clocks[_Name] = (nts::Clock *) component;
-	if (_Type == "input")
-		_inputs[_Name] = (nts::Input *) component;
-	if (_Type == "output")
-		_outputs[_Name] = (nts::Output *) component;
+	if (_type == "clock")
+		_clocks[_name] = (nts::Clock *) component;
+	if (_type == "input")
+		_inputs[_name] = (nts::Input *) component;
+	if (_type == "output")
+		_outputs[_name] = (nts::Output *) component;
 }
 
-void nts::Parsing::ModifValueWithArg()
+void nts::Parsing::modifValueWithArg()
 {
-	for (size_t pos = 0; pos < _NameArg.size(); pos++) {
-		if (_NameArg[pos] == _Name) {
-			_Value = _ValueArg[pos];
-			_NameArg.erase(_NameArg.begin() + pos);
-			_ValueArg.erase(_ValueArg.begin() + pos);
+	for (size_t pos = 0; pos < _nameArg.size(); pos++) {
+		if (_nameArg[pos] == _name) {
+			_value = _valueArg[pos];
+			_nameArg.erase(_nameArg.begin() + pos);
+			_valueArg.erase(_valueArg.begin() + pos);
 		}
 	}
 }
 
-void nts::Parsing::StockChipset(std::string &Line)
+void nts::Parsing::stockChipset(std::string &line)
 {
-	DefineType(Line);
-	DefineValue(Line);
-	if (_Type == "output" || _Type == "false")
-		_Value = "0";
-	if (_Type == "true")
-		_Value = "1";
-	DefineName(Line);
-	ModifValueWithArg();
-	if (_Value.empty() && _Type == "input")
-		throw ErrorParsing("Input name need value.", "");
+	defineType(line);
+	defineValue(line);
+	if (_type == "output" || _type == "false")
+		_value = "0";
+	if (_type == "true")
+		_value = "1";
+	defineName(line);
+	modifValueWithArg();
+	if (_value.empty() && _type == "input")
+		throw nts::errorParsing("Input name need value.", "");
 	setComponent();
-	_FileMap[_Name] = _Type;
+	_fileMap[_name] = _type;
 }
 
-void nts::Parsing::ChipsetsOrLinksIsNotInFile()
+void nts::Parsing::chipsetsOrLinksIsNotInFile()
 {
-	if (!_ChipsetInFile)
-		throw nts::ErrorParsing("Chipsets section not in file.", "");
-	if (!_LinkInFile)
-		throw nts::ErrorParsing("Links section not in file.", "");
+	if (!_chipsetInFile)
+		throw nts::errorParsing("Chipsets section not in file.", "");
+	if (!_linkInFile)
+		throw nts::errorParsing("Links section not in file.", "");
 }
 
-void nts::Parsing::StockLinks(std::string &Line)
+void nts::Parsing::stockLinks(std::string &line)
 {
-	unsigned long int PosSpace = Line.find(' ');
-	unsigned long int PosTab = Line.find('\t');
+	unsigned long int posSpace = line.find(' ');
+	unsigned long int posTab = line.find('\t');
+	unsigned long int posSemicolons = line.find(':');
+	unsigned long int secondPosSemicolons = line.find_last_of(':');
 
-	if (PosSpace == std::string::npos && PosTab == std::string::npos)
-		throw ErrorParsing("Problem delimitation links : ", Line);
-
-	unsigned long int PosSemicolons = Line.find(':');
-	unsigned long int SecondPosSemicolons = Line.find_last_of(':');
-
-	if (PosSemicolons == SecondPosSemicolons)
-		throw ErrorParsing("No semicolon delimiter in the line : ",
-			Line);
-
-	std::string name = Line.substr(0, PosSemicolons);
-
+	if (posSpace == std::string::npos && posTab == std::string::npos) {
+		throw nts::errorParsing("Problem delimitation links : ", line);
+	}
+	if (posSemicolons == secondPosSemicolons)
+		throw nts::errorParsing("No semicolon delimiter in the line : ",
+			line);
+	std::string name = line.substr(0, posSemicolons);
 	if (_components.find(name) == _components.end())
-		throw ErrorParsing("Name in section link is unknown : ", name);
-	PosSpace = Line.find(' ');
-	std::string value = Line.substr(PosSemicolons + 1,
-		(PosSpace - 1) - PosSemicolons);
-	_NameLink.push_back(name);
-	_ValueLink.push_back(value);
-	PosSpace = Line.find_last_of(' ');
-	name = Line.substr(PosSpace + 1, SecondPosSemicolons - 1 - PosSpace);
-	value = Line.substr(SecondPosSemicolons + 1, Line.size());
-	_NameLink.push_back(name);
-	_ValueLink.push_back(value);
+		throw nts::errorParsing("Name in section link is unknow : ", name);
+	posSpace = line.find(' ');
+	std::string value = line.substr(posSemicolons + 1,
+		(posSpace - 1) - posSemicolons);
+	_nameLink.push_back(name);
+	_valueLink.push_back(value);
+	posSpace = line.find_last_of(' ');
+	name = line.substr(posSpace + 1, secondPosSemicolons - 1 - posSpace);
+	value = line.substr(secondPosSemicolons + 1, line.size());
+	_nameLink.push_back(name);
+	_valueLink.push_back(value);
 }
 
-void nts::Parsing::ParseLine(std::string &Line)
+void nts::Parsing::parseLine(std::string &line)
 {
 	int ret = 0;
 
-	DelComment(Line);
-	DelSpaceAndTab(Line);
-	if (Line.empty())
+	delComment(line);
+	delSpaceAndTab(line);
+	if (line.empty())
 		return;
-	ret = VerifLink(Line);
-	if (_PosInFile == 2 && ret == 0)
-		StockLinks(Line);
-	ret = VerifChipset(Line);
-	if (_PosInFile == 1 && ret == 0)
-		StockChipset(Line);
+	ret = verifLink(line);
+	if (_posInFile == 2 && ret == 0)
+		stockLinks(line);
+	ret = verifChipset(line);
+	if (_posInFile == 1 && ret == 0)
+		stockChipset(line);
 }
 
-void nts::Parsing::VerifEmptyArg()
+void nts::Parsing::verifEmptyArg()
 {
-	if (!_NameArg.empty())
-		throw ErrorParsing("Error with the name of argument : ", "");
+	if (!_nameArg.empty())
+		throw nts::errorParsing("Error with the name of argument : ", "");
 }
 
-void nts::Parsing::ParseFile()
+void nts::Parsing::parseFile()
 {
-	std::ifstream File(_FileName.c_str());
+	std::ifstream file(_fileName.c_str());
 
-	if (File) {
-		std::string Line;
-		while (getline(File, Line)) {
-			ParseLine(Line);
-			_Type = "";
-			_Name = "";
-			_Value = "";
+	if (file) {
+		std::string line;
+		while (getline(file, line)) {
+			parseLine(line);
+			_type = "";
+			_name = "";
+			_value = "";
 		}
-		/*		for (unsigned int i = 0; i != _ValueLink.size(); i++) {
-					std::cout << "Name = " << _NameLink[i] << " value = " << _ValueLink[i] << std::endl;
-					std::cout << _FileMap[_NameLink[i]] << std::endl;
-				}*/
-		VerifEmptyArg();
-		ChipsetsOrLinksIsNotInFile();
+		/*int cpt1 = 0;
+		int cpt2 = 1;
+		std::cout << _NameLink.size() << std::endl;
+		for (unsigned int i = 0; i != _NameLink.size(); i = i + 2) {
+			_MapInfoFile
+			nts::IComponent *Componnent1;
+			nts::IComponent *Componnent2;
+
+			if (_FileMap[_NameLink[cpt1]] == "input" && IsComponent(_FileMap[_NameLink[cpt2]]) == 0) {
+
+				_NameLink[cpt1]->setLink(atoi(_ValueLink[0].c_str()), _NameLink[1], atoi(_ValueLink[1].c_str()));
+				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
+			}
+			if (IsComponent(_FileMap[_NameLink[cpt1]]) == 0 && _FileMap[_NameLink[cpt2]] == "input") {
+				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
+			}
+			if (IsComponent(_FileMap[_NameLink[cpt1]]) == 0 && _FileMap[_NameLink[cpt2]] == "output") {
+				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
+			}
+			if (_FileMap[_NameLink[cpt1]] == "output" && IsComponent(_FileMap[_NameLink[cpt2]]) == 0) {
+				//nts::IComponent::setLink(atoi(_ValueLink[0].data()), _NameLink[1], atoi(_ValueLink[1].data()));
+				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
+			}
+			cpt1 = cpt1 + 2;
+			cpt2 = cpt2 + 2;
+		}*/
+		verifEmptyArg();
+		chipsetsOrLinksIsNotInFile();
 	} else {
-		throw nts::ErrorParsing("Bad file given as parameter : ", _FileName);
+		throw nts::errorParsing("Bad file given as parameter : ", _fileName);
 	}
 }
 
@@ -381,7 +400,7 @@ nts::IComponent &nts::Parsing::create(std::string const &type,
 	};
 
 	if (types.find(type) == types.end())
-		throw nts::ErrorParsing("Unknow type: ", type);
+		throw nts::errorParsing("Unknow type: ", type);
 
 	nts::IComponent *component = types[type];
 
