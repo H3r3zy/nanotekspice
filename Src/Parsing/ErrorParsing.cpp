@@ -7,21 +7,21 @@
 
 #include "ErrorParsing.hpp"
 
-nts::ErrorParsing::ErrorParsing(const std::string &message, const std::string &indication) : _Message(message), _Indication(indication)
+nts::errorParsing::errorParsing(const std::string &message, const std::string &indication) : _message(message), _indication(indication)
 {
 }
 
-nts::ErrorParsing::~ErrorParsing()
+nts::errorParsing::~errorParsing()
 {
 }
 
-const std::string &nts::ErrorParsing::GetIndication() const
+const std::string &nts::errorParsing::getIndication() const
 {
-	return (_Indication);
+	return (_indication);
 }
 
-const std::string &nts::ErrorParsing::GetMessage() const
+const std::string &nts::errorParsing::getMessage() const
 {
-	return (_Message);
+	return (_message);
 }
 

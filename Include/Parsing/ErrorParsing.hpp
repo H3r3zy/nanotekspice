@@ -12,15 +12,15 @@
 #include <exception>
 
 namespace nts {
-	class ErrorParsing : public std::exception {
+	class errorParsing : public std::exception {
 		public:
-		ErrorParsing(const std::string &message, const std::string &indication);
-		~ErrorParsing() throw() ;
-		std::string const &GetMessage() const;
-		std::string const &GetIndication() const;
+		errorParsing(const std::string &message, const std::string &indication);
+		~errorParsing() throw() ;
+		std::string const &getMessage() const;
+		std::string const &getIndication() const;
 		private:
-		std::string _Message;
-		std::string _Indication;
+		std::string _message;
+		std::string _indication;
 	};
 }
 
