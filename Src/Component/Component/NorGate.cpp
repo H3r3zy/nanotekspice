@@ -7,23 +7,27 @@
 
 #include "NorGate.hpp"
 
-nts::NorGate::NorGate(nts::NorGate const &toCopy)
-{
-	(void) toCopy;
-	delete this;
-}
-
-nts::NorGate &nts::NorGate::operator=(nts::NorGate const &toCopy)
-{
-	(void) toCopy;
-	delete this;
-	return *this;
-}
-
 std::ostream &operator<<(std::ostream &os, nts::NorGate const &data)
 {
 	data.dump();
 	return os;
+}
+
+nts::NorGate::NorGate(nts::NorGate const &data)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+}
+
+nts::NorGate& nts::NorGate::operator=(nts::NorGate const &data)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+	return *this;
 }
 
 nts::Tristate nts::NorGate::compute(size_t pin)
@@ -47,4 +51,9 @@ nts::Tristate nts::NorGate::compute(size_t pin)
 void nts::NorGate::dump() const
 {
 	std::cout << "Nor Gate" << std::endl;
+}
+
+nts::NorGate *nts::NorGate::copy() const
+{
+	return new nts::NorGate(*this);
 }

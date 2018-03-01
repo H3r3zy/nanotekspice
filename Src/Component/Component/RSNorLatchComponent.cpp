@@ -12,25 +12,35 @@ nts::RSNorLatchComponent::RSNorLatchComponent()
 {
 	_pin_number = 4;
 	_not = new nts::NotGate();
-	auto _this = dynamic_cast<nts::IComponent *>(this);
+	init();
+}
 
-	_not->setLink(1, *this, 3);
-	_this->setLink(4, *_not, 2);
+nts::RSNorLatchComponent::RSNorLatchComponent(nts::RSNorLatchComponent const &data)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+	_not = data._not;
+	init();
+}
 
+nts::RSNorLatchComponent& nts::RSNorLatchComponent::operator=(
+	nts::RSNorLatchComponent const &data
+)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+	_not = data._not;
+	init();
+	return *this;
 }
 
 nts::RSNorLatchComponent::~RSNorLatchComponent()
 {
 	delete _not;
-}
-
-nts::RSNorLatchComponent::RSNorLatchComponent(nts::RSNorLatchComponent const &toCopy)
-{
-}
-
-nts::RSNorLatchComponent &nts::RSNorLatchComponent::operator=(nts::RSNorLatchComponent const &toCopy)
-{
-	return *this;
 }
 
 std::ostream &operator<<(std::ostream &os, nts::RSNorLatchComponent const &data)
@@ -62,22 +72,17 @@ nts::Tristate nts::RSNorLatchComponent::compute(size_t pin)
 void nts::RSNorLatchComponent::dump() const
 {
 	std::cout << "RSNorLatchComponent Component" << std::endl;
-	try {
-		std::cout << "vvv Input 1 vvv" << std::endl;
-		if (_pins.at(1))
-			_pins.at(1)->dump();
-		std::cout << "vvv Input 2 vvv" << std::endl;
-		if (_pins.at(2))
-			_pins.at(2)->dump();
-	} catch(std::out_of_range &e) {
+}
 
-	}
-	std::cout << "|=> output: ";
-	if (_res == nts::UNDEFINED)
-		std::cout << "Undefined";
-	if (_res == nts::FALSE)
-		std::cout << "False";
-	if (_res == nts::TRUE)
-		std::cout << "True";
-	std::cout << std::endl;
+nts::RSNorLatchComponent *nts::RSNorLatchComponent::copy() const
+{
+	return new nts::RSNorLatchComponent(*this);
+}
+
+void nts::RSNorLatchComponent::init()
+{
+	auto _this = dynamic_cast<nts::IComponent *>(this);
+
+	_not->setLink(1, *this, 3);
+	_this->setLink(4, *_not, 2);
 }

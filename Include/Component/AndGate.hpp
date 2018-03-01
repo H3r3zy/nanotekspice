@@ -25,12 +25,13 @@ namespace nts {
 		~AndGate() override = default;
 
 		// Operator
-		AndGate &operator=(nts::AndGate const &);
+		nts::AndGate &operator=(nts::AndGate const &);
 
 
 		// Other
 		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::AndGate *copy() const override;
 	};
 }
 

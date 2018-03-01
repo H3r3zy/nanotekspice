@@ -14,7 +14,7 @@
 
 namespace nts {
 	class HCF4081B: public AbstractComponent {
-		public:
+	public:
 		// Constructor
 		HCF4081B();
 
@@ -24,23 +24,25 @@ namespace nts {
 		~HCF4081B() override;
 
 		// Operator
-		HCF4081B &operator=(nts::HCF4081B const &);
+		nts::HCF4081B &operator=(nts::HCF4081B const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::HCF4081B *copy() const override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 		nts::IComponent *gate1;
 		nts::IComponent *gate2;
 		nts::IComponent *gate3;
 		nts::IComponent *gate4;
+		void init();
 	};
 }
 

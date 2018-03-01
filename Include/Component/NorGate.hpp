@@ -23,7 +23,7 @@ namespace nts {
 		~NorGate() = default;
 
 		// Operator
-		NorGate &operator=(nts::NorGate const &);
+		nts::NorGate &operator=(nts::NorGate const &);
 
 		// Getter
 
@@ -32,6 +32,7 @@ namespace nts {
 		// Other
 		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::NorGate *copy() const override;
 
 	protected:
 

@@ -16,33 +16,35 @@ namespace nts {
 	class Input: public nts::AbstractComponent {
 	public:
 		// Constructor
-		Input();
+		Input() = default;
 
-		Input(Input const &);
+		Input(nts::Input const &);
 
 		// Destructor
-		~Input() = default;
+		~Input() override = default;
 
 		// Operator
-		Input &operator=(Input const &);
+		nts::Input &operator=(nts::Input const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3);
+		nts::Tristate compute(std::size_t pin) override;
 		void setValue(nts::Tristate = nts::UNDEFINED);
 		void setLink(std::size_t pin, nts::IComponent &other,
-			std::size_t otherPin);
+			std::size_t otherPin) override;
 
-		void dump() const;
+		void dump() const override;
+		nts::Input *copy() const override;
 
 	protected:
 		nts::Tristate _value = nts::UNDEFINED;
 	private:
 	};
 }
+
 std::ostream &operator<<(std::ostream &os, nts::Input const &);
 
 #endif //CPP_NANOTEKSPICE_INPUT_HPP

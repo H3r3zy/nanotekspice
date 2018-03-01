@@ -13,9 +13,9 @@
 
 namespace nts {
 	class XorGate : public nts::AbstractComponent {
-		public:
+	public:
 		// Constructor
-		XorGate();
+		XorGate() = default;
 
 		XorGate(nts::XorGate const &);
 
@@ -23,19 +23,20 @@ namespace nts {
 		~XorGate() = default;
 
 		// Operator
-		XorGate &operator=(nts::XorGate const &);
+		nts::XorGate &operator=(nts::XorGate const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::XorGate *copy() const  override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 
 	};
 }

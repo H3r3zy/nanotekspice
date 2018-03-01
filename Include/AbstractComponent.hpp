@@ -18,7 +18,7 @@ namespace nts {
 		// Constructor
 
 		// Destructor
-		virtual ~AbstractComponent() = default;
+		virtual ~AbstractComponent() override = default;
 
 		// Operator
 
@@ -27,10 +27,10 @@ namespace nts {
 
 		// Setter
 		virtual void setLink(std::size_t pin, nts::IComponent &other,
-			std::size_t otherPin);
+			std::size_t otherPin) override;
 
 		// Other
-		virtual nts::Tristate compute(std::size_t pin = 3) = 0;
+		virtual nts::Tristate compute(std::size_t pin) = 0;
 
 		virtual void dump() const = 0;
 
@@ -42,7 +42,7 @@ namespace nts {
 
 		std::string &tristate2Value(nts::Tristate tristate) const;
 		nts::Tristate value2Tristate(std::string &value) const;
-		nts::Tristate value2Tristate(const char value) const;
+		nts::Tristate value2Tristate(char value) const;
 	private:
 
 	};

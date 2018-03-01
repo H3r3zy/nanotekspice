@@ -5,6 +5,7 @@
 ** Created by sahel.lucas-saoudi@epitech.eu,
 */
 
+#include <vector>
 #include "FullAdderComponent.hpp"
 
 nts::FullAdderComponent::FullAdderComponent()
@@ -12,20 +13,22 @@ nts::FullAdderComponent::FullAdderComponent()
 	_pin_number = 5;
 }
 
-nts::FullAdderComponent::FullAdderComponent(
-	nts::FullAdderComponent const &toCopy
-)
+nts::FullAdderComponent::FullAdderComponent(nts::FullAdderComponent const &data)
 {
-	(void) toCopy;
-	delete this;
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 }
 
-nts::FullAdderComponent &nts::FullAdderComponent::operator=(
-	nts::FullAdderComponent const &toCopy
+nts::FullAdderComponent& nts::FullAdderComponent::operator=(
+	nts::FullAdderComponent const &data
 )
 {
-	(void) toCopy;
-	delete this;
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 	return *this;
 }
 
@@ -46,7 +49,6 @@ nts::Tristate nts::FullAdderComponent::compute(size_t pin)
 			UNDEFINEDVALUE(value1) + UNDEFINEDVALUE(value2) +
 				UNDEFINEDVALUE(value3);
 
-		//std::cout << value1 << " " << value2 << " " << value3;
 		if (sum >= 2) {
 			_res = nts::TRUE;
 		} else if (undefinedNumber >= 2 ||
@@ -80,4 +82,9 @@ nts::Tristate nts::FullAdderComponent::compute(size_t pin)
 void nts::FullAdderComponent::dump() const
 {
 	std::cout << "Full Adder Component" << std::endl;
+}
+
+nts::FullAdderComponent *nts::FullAdderComponent::copy() const
+{
+	return new nts::FullAdderComponent(*this);
 }

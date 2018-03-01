@@ -24,15 +24,16 @@ namespace nts {
 		~CD4514BC() override = default;
 
 		// Operator
-		CD4514BC &operator=(nts::CD4514BC const &);
+		nts::CD4514BC &operator=(nts::CD4514BC const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 11) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::CD4514BC *copy() const override;
 
 	protected:
 

@@ -14,7 +14,7 @@
 namespace nts {
 
 	class NotGate : public nts::AbstractComponent {
-		public:
+	public:
 		// Constructor
 		NotGate();
 
@@ -24,11 +24,13 @@ namespace nts {
 		~NotGate() override = default;
 
 		// Operator
-		NotGate &operator=(nts::NotGate const &);
+		nts::NotGate &operator=(nts::NotGate const &);
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 2) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::NotGate *copy() const override;
+
 	};
 }
 

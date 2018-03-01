@@ -21,7 +21,7 @@ namespace nts {
 	class Parsing {
 	public:
 		// Constructor
-		Parsing(std::string fileName, int &ac, char **&av);
+		Parsing(std::string &fileName, int &ac, char **&av);
 
 		// Destructor
 		~Parsing() = default;
@@ -31,6 +31,7 @@ namespace nts {
 		std::map<std::string, nts::Input *> &getInputs();
 		std::map<std::string, nts::Output *> &getOutputs();
 		std::map<std::string, nts::Clock *> &getClocks();
+
 	private:
 		// Parse
 		void parseFile();
@@ -65,7 +66,7 @@ namespace nts {
 		void setComponent();
 
 		// Creation
-		nts::IComponent &create(std::string const &, std::string const &);
+		nts::IComponent *create(std::string const &, std::string const &);
 		nts::Tristate transformValue(std::string const &);
 
 		// Components Map
@@ -90,4 +91,7 @@ namespace nts {
 		char **_av;
 	};
 }
+
+#define ISINMAP(name, map) ((map).find(name) != (map).end())
+
 #endif //CPP_NANOTEKSPICE_PARSING_HPP

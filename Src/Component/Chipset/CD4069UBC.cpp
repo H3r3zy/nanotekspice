@@ -17,6 +17,70 @@ nts::CD4069UBC::CD4069UBC()
 	gate4 = new nts::NotGate();
 	gate5 = new nts::NotGate();
 	gate6 = new nts::NotGate();
+	init();
+}
+
+nts::CD4069UBC::~CD4069UBC()
+{
+	delete gate1;
+	delete gate2;
+	delete gate3;
+	delete gate4;
+}
+
+nts::CD4069UBC& nts::CD4069UBC::operator=(nts::CD4069UBC const &data)
+{
+	gate1 = data.gate1;
+	gate2 = data.gate2;
+	gate3 = data.gate3;
+	gate4 = data.gate4;
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+	init();
+	return *this;
+}
+
+nts::CD4069UBC::CD4069UBC(nts::CD4069UBC const &data)
+{
+	gate1 = data.gate1;
+	gate1 = data.gate2;
+	gate1 = data.gate3;
+	gate1 = data.gate4;
+	gate1 = data.gate5;
+	gate1 = data.gate6;
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+	init();
+}
+
+std::ostream &operator<<(std::ostream &os, nts::CD4069UBC const &data)
+{
+	data.dump();
+	return os;
+}
+
+nts::Tristate nts::CD4069UBC::compute(size_t pin)
+{
+	_res = getPins(pin);
+	return _res;
+}
+
+void nts::CD4069UBC::dump() const
+{
+	std::cout << "CD4069UBC Chipset" << std::endl;
+}
+
+nts::CD4069UBC *nts::CD4069UBC::copy() const
+{
+	return new nts::CD4069UBC(*this);
+}
+
+void nts::CD4069UBC::init()
+{
 	auto _this = dynamic_cast<nts::IComponent *>(this);
 
 	gate1->setLink(1, *_this, 1);
@@ -36,56 +100,4 @@ nts::CD4069UBC::CD4069UBC()
 
 	gate6->setLink(1, *_this, 13);
 	_this->setLink(12, *gate6, 2);
-}
-
-nts::CD4069UBC::~CD4069UBC()
-{
-	delete gate1;
-	delete gate2;
-	delete gate3;
-	delete gate4;
-}
-
-nts::CD4069UBC::CD4069UBC(nts::CD4069UBC const &toCopy)
-{
-}
-
-nts::CD4069UBC &nts::CD4069UBC::operator=(nts::CD4069UBC const &toCopy)
-{
-	return *this;
-}
-
-std::ostream &operator<<(std::ostream &os, nts::CD4069UBC const &data)
-{
-	data.dump();
-	return os;
-}
-
-nts::Tristate nts::CD4069UBC::compute(size_t pin)
-{
-	_res = getPins(pin);
-	return _res;
-}
-
-void nts::CD4069UBC::dump() const
-{
-	std::cout << "CD4069UBC Chipset" << std::endl;
-	try {
-		std::cout << "vvv Input 1 vvv" << std::endl;
-		if (_pins.at(1))
-			_pins.at(1)->dump();
-		std::cout << "vvv Input 2 vvv" << std::endl;
-		if (_pins.at(2))
-			_pins.at(2)->dump();
-	} catch(std::out_of_range &e) {
-
-	}
-	std::cout << "|=> output: ";
-	if (_res == nts::UNDEFINED)
-		std::cout << "Undefined";
-	if (_res == nts::FALSE)
-		std::cout << "False";
-	if (_res == nts::TRUE)
-		std::cout << "True";
-	std::cout << std::endl;
 }

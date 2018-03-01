@@ -7,23 +7,27 @@
 
 #include "NandGate.hpp"
 
-nts::NandGate::NandGate(nts::NandGate const &toCopy)
-{
-	(void) toCopy;
-	delete this;
-}
-
-nts::NandGate &nts::NandGate::operator=(nts::NandGate const &toCopy)
-{
-	(void) toCopy;
-	delete this;
-	return *this;
-}
-
 std::ostream &operator<<(std::ostream &os, nts::NandGate const &data)
 {
 	data.dump();
 	return os;
+}
+
+nts::NandGate::NandGate(nts::NandGate const &data)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+}
+
+nts::NandGate& nts::NandGate::operator=(nts::NandGate const &data)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+	return *this;
 }
 
 nts::Tristate nts::NandGate::compute(size_t pin)
@@ -47,4 +51,9 @@ nts::Tristate nts::NandGate::compute(size_t pin)
 void nts::NandGate::dump() const
 {
 	std::cout << "Nand Gate" << std::endl;
+}
+
+nts::NandGate *nts::NandGate::copy() const
+{
+	return new nts::NandGate(*this);
 }

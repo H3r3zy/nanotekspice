@@ -14,7 +14,7 @@
 
 namespace nts {
 	class CD4008BMS: public AbstractComponent {
-		public:
+	public:
 		// Constructor
 		CD4008BMS();
 
@@ -24,23 +24,26 @@ namespace nts {
 		~CD4008BMS() override;
 
 		// Operator
-		CD4008BMS &operator=(nts::CD4008BMS const &);
+		nts::CD4008BMS &operator=(nts::CD4008BMS const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::CD4008BMS *copy() const override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 		nts::IComponent *gate1;
 		nts::IComponent *gate2;
 		nts::IComponent *gate3;
 		nts::IComponent *gate4;
+
+		void init();
 	};
 }
 

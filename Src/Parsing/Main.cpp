@@ -17,15 +17,15 @@ int main(int ac, char **av)
 		return (1);
 	}
 	try {
-		nts::Parsing P(av[1], ac, av);
+		nts::Parsing P(*new std::string(av[1]), ac, av);
 		std::map<std::string, nts::IComponent *> components = P.getComponents();
 		std::map<std::string, nts::Input *> inputs = P.getInputs();
 		std::map<std::string, nts::Output *> outputs = P.getOutputs();
 		std::map<std::string, nts::Clock *> clocks = P.getClocks();
 
-		for (auto it = outputs.begin(); it != outputs.end(); it++) {
-			std::cout << it->first << ": ";
-			std::cout << it->second->compute(1) << std::endl;
+		for (auto &it: outputs) {
+			std::cout << it.first << ": ";
+			std::cout << it.second->compute(1) << std::endl;
 
 		}
 	} catch (nts::errorParsing const &message) {

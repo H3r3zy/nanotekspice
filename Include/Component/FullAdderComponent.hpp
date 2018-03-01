@@ -23,7 +23,7 @@ namespace nts {
 		~FullAdderComponent() = default;
 
 		// Operator
-		FullAdderComponent &operator=(nts::FullAdderComponent const &);
+		nts::FullAdderComponent &operator=(nts::FullAdderComponent const &);
 
 		// Getter
 
@@ -32,6 +32,7 @@ namespace nts {
 		// Other
 		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::FullAdderComponent *copy() const override;
 
 		protected:
 

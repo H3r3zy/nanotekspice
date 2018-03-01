@@ -17,7 +17,7 @@ namespace nts {
 	class OrGate : public nts::AbstractComponent {
 	public:
 		// Constructor
-		OrGate();
+		OrGate() = default;
 
 		OrGate(nts::OrGate const &);
 
@@ -25,11 +25,13 @@ namespace nts {
 		~OrGate() override = default;
 
 		// Operator
-		OrGate &operator=(nts::OrGate const &);
+		nts::OrGate &operator=(nts::OrGate const &);
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::OrGate *copy() const override;
+
 	};
 }
 

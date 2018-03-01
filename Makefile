@@ -38,7 +38,7 @@ SRCS	= 	Src/Parsing/Main.cpp		\
 
 OBJS	= $(SRCS:.cpp=.o)
 
-CPPFLAGS = -I ./Include -I ./Include/Chipset -I ./Include/Component
+CPPFLAGS = -I ./Include -I ./Include/Chipset -I ./Include/Component -I ./Include/Parsing
 CPPFLAGS += -std=c++11 -Wall -Wextra
 
 all: $(NAME)

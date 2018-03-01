@@ -14,7 +14,7 @@
 
 namespace nts {
 	class CD4069UBC: public AbstractComponent {
-		public:
+	public:
 		// Constructor
 		CD4069UBC();
 
@@ -24,25 +24,27 @@ namespace nts {
 		~CD4069UBC() override;
 
 		// Operator
-		CD4069UBC &operator=(nts::CD4069UBC const &);
+		nts::CD4069UBC &operator=(nts::CD4069UBC const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::CD4069UBC *copy() const override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 		nts::IComponent *gate1;
 		nts::IComponent *gate2;
 		nts::IComponent *gate3;
 		nts::IComponent *gate4;
 		nts::IComponent *gate5;
 		nts::IComponent *gate6;
+		void init();
 	};
 }
 

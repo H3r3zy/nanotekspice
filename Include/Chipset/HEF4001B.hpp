@@ -24,15 +24,16 @@ namespace nts {
 		~HEF4001B() override;
 
 		// Operator
-		HEF4001B &operator=(nts::HEF4001B const &);
+		nts::HEF4001B &operator=(nts::HEF4001B const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::HEF4001B *copy() const override;
 
 	protected:
 
@@ -41,6 +42,7 @@ namespace nts {
 		nts::IComponent *gate2;
 		nts::IComponent *gate3;
 		nts::IComponent *gate4;
+		void init();
 	};
 }
 

@@ -7,23 +7,27 @@
 
 #include "AndGate.hpp"
 
-nts::AndGate::AndGate(nts::AndGate const &toCopy)
-{
-	(void) toCopy;
-	delete this;
-}
-
-nts::AndGate &nts::AndGate::operator=(nts::AndGate const &toCopy)
-{
-	(void) toCopy;
-	delete this;
-	return *this;
-}
-
 std::ostream &operator<<(std::ostream &os, nts::AndGate const &data)
 {
 	data.dump();
 	return os;
+}
+
+nts::AndGate::AndGate(nts::AndGate const &data)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+}
+
+nts::AndGate& nts::AndGate::operator=(nts::AndGate const &data)
+{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
+	return *this;
 }
 
 nts::Tristate nts::AndGate::compute(size_t pin)
@@ -49,4 +53,9 @@ nts::Tristate nts::AndGate::compute(size_t pin)
 void nts::AndGate::dump() const
 {
 	std::cout << "And Gate" << std::endl;
+}
+
+nts::AndGate *nts::AndGate::copy() const
+{
+	return new nts::AndGate(*this);
 }

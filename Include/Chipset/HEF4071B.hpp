@@ -14,7 +14,7 @@
 
 namespace nts {
 	class HEF4071B: public AbstractComponent {
-		public:
+	public:
 		// Constructor
 		HEF4071B();
 
@@ -24,23 +24,25 @@ namespace nts {
 		~HEF4071B() override;
 
 		// Operator
-		HEF4071B &operator=(nts::HEF4071B const &);
+		nts::HEF4071B &operator=(nts::HEF4071B const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::HEF4071B *copy() const override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 		nts::IComponent *gate1;
 		nts::IComponent *gate2;
 		nts::IComponent *gate3;
 		nts::IComponent *gate4;
+		void init();
 	};
 }
 

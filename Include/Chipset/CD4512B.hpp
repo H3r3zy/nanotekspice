@@ -20,18 +20,19 @@ namespace nts {
 		CD4512B(nts::CD4512B const &);
 
 		// Destructor
-		~CD4512B() override;
+		~CD4512B() override = default;
 
 		// Operator
-		CD4512B &operator=(nts::CD4512B const &);
+		nts::CD4512B &operator=(nts::CD4512B const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 14) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::CD4512B *copy() const override;
 
 	protected:
 	private:

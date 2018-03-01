@@ -7,7 +7,7 @@
 
 #include "CD4514BC.hpp"
 
-const std::map<unsigned int, unsigned int> OUTPUTINPUT = {
+static const std::map<unsigned int, unsigned int> OUTPUTINPUT = {
 	{11, 0},
 	{9, 1},
 	{10, 2},
@@ -31,16 +31,20 @@ nts::CD4514BC::CD4514BC()
 	_pin_number = 24;
 }
 
-nts::CD4514BC::CD4514BC(nts::CD4514BC const &toCopy)
+nts::CD4514BC::CD4514BC(nts::CD4514BC const &data)
 {
-	(void) toCopy;
-	delete this;
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 }
 
-nts::CD4514BC &nts::CD4514BC::operator=(nts::CD4514BC const &toCopy)
+nts::CD4514BC& nts::CD4514BC::operator=(nts::CD4514BC const &data)
 {
-	(void) toCopy;
-	delete this;
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 	return *this;
 }
 
@@ -78,4 +82,9 @@ nts::Tristate nts::CD4514BC::compute(size_t pin)
 void nts::CD4514BC::dump() const
 {
 	std::cout << "CD4514BC Chipset" << std::endl;
+}
+
+nts::CD4514BC *nts::CD4514BC::copy() const
+{
+	return new nts::CD4514BC(*this);
 }

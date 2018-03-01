@@ -20,7 +20,7 @@ static const unsigned int x4Pin = 5;
 static const unsigned int x5Pin = 6;
 static const unsigned int x6Pin = 7;
 static const unsigned int x7Pin = 9;
-const std::map<unsigned int, unsigned int> outputInput = {
+static const std::map<unsigned int, unsigned int> outputInput = {
 	{0, x0Pin},
 	{1, x1Pin},
 	{2, x2Pin},
@@ -36,16 +36,20 @@ nts::CD4512B::CD4512B()
 	_pin_number = 16;
 }
 
-nts::CD4512B::~CD4512B()
+nts::CD4512B::CD4512B(nts::CD4512B const &data)
 {
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 }
 
-nts::CD4512B::CD4512B(nts::CD4512B const &toCopy)
+nts::CD4512B& nts::CD4512B::operator=(nts::CD4512B const &data)
 {
-}
-
-nts::CD4512B &nts::CD4512B::operator=(nts::CD4512B const &toCopy)
-{
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 	return *this;
 }
 
@@ -82,4 +86,9 @@ nts::Tristate nts::CD4512B::compute(size_t pin)
 void nts::CD4512B::dump() const
 {
 	std::cout << "CD4512B Component" << std::endl;
+}
+
+nts::CD4512B *nts::CD4512B::copy() const
+{
+	return new nts::CD4512B(*this);
 }

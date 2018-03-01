@@ -12,12 +12,20 @@ nts::NotGate::NotGate()
 	_pin_number = 2;
 }
 
-nts::NotGate::NotGate(nts::NotGate const &toCopy)
+nts::NotGate::NotGate(nts::NotGate const &data)
 {
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 }
 
-nts::NotGate &nts::NotGate::operator=(nts::NotGate const &toCopy)
+nts::NotGate& nts::NotGate::operator=(nts::NotGate const &data)
 {
+	_pin_number = data._pin_number;
+	_pinsArgument = data._pinsArgument;
+	_pins = data._pins;
+	_res = data._res;
 	return *this;
 }
 
@@ -47,19 +55,9 @@ nts::Tristate nts::NotGate::compute(size_t pin)
 void nts::NotGate::dump() const
 {
 	std::cout << "Not Gate" << std::endl;
-	try {
-		std::cout << "vvv Input vvv" << std::endl;
-		if (_pins.at(1))
-			_pins.at(1)->dump();
-	} catch(std::out_of_range &e) {
+}
 
-	}
-	std::cout << "|=> output: ";
-	if (_res == nts::UNDEFINED)
-		std::cout << "Undefined";
-	if (_res == nts::FALSE)
-		std::cout << "False";
-	if (_res == nts::TRUE)
-		std::cout << "True";
-	std::cout << std::endl;
+nts::NotGate *nts::NotGate::copy() const
+{
+	return  new nts::NotGate(*this);
 }

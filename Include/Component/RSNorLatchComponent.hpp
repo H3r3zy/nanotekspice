@@ -13,7 +13,7 @@
 
 namespace nts {
 	class RSNorLatchComponent: public AbstractComponent {
-		public:
+	public:
 		// Constructor
 		RSNorLatchComponent();
 
@@ -23,20 +23,22 @@ namespace nts {
 		~RSNorLatchComponent() override;
 
 		// Operator
-		RSNorLatchComponent &operator=(nts::RSNorLatchComponent const &);
+		nts::RSNorLatchComponent &operator=(nts::RSNorLatchComponent const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::RSNorLatchComponent *copy() const override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 		nts::IComponent *_not;
+		void init();
 	};
 }
 

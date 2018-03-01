@@ -23,7 +23,7 @@ namespace nts {
 		~NandGate() override = default;
 
 		// Operator
-		NandGate &operator=(nts::NandGate const &);
+		nts::NandGate &operator=(nts::NandGate const &);
 
 		// Getter
 
@@ -32,6 +32,7 @@ namespace nts {
 		// Other
 		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::NandGate *copy() const override;
 
 	protected:
 

@@ -14,7 +14,7 @@
 
 namespace nts {
 	class CD4011B: public AbstractComponent {
-		public:
+	public:
 		// Constructor
 		CD4011B();
 
@@ -24,23 +24,25 @@ namespace nts {
 		~CD4011B() override;
 
 		// Operator
-		CD4011B &operator=(nts::CD4011B const &);
+		nts::CD4011B &operator=(nts::CD4011B const &);
 
 		// Getter
 
 		// Setter
 
 		// Other
-		nts::Tristate compute(std::size_t pin = 3) override;
+		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
+		nts::CD4011B *copy() const override;
 
-		protected:
+	protected:
 
-		private:
+	private:
 		nts::IComponent *gate1;
 		nts::IComponent *gate2;
 		nts::IComponent *gate3;
 		nts::IComponent *gate4;
+		void init();
 	};
 }
 

@@ -29,7 +29,7 @@ static const std::vector<std::string> TYPES({
 	"4094", "4503", "4512", "4514",	"i4004", "mk4801"
 });
 
-nts::Parsing::Parsing(std::string fileName, int &ac, char **&av) : _fileName(
+nts::Parsing::Parsing(std::string &fileName, int &ac, char **&av) : _fileName(
 	fileName), _ac(ac), _av(av)
 {
 	parseArgument();
@@ -198,7 +198,7 @@ void nts::Parsing::defineValue(std::string &line)
 		throw nts::errorParsing("Variable need value : ", line);
 	if (checkFirst != firstPos || checkSecond != secondPos)
 		throw nts::errorParsing("To many value : ", line);
-	if (firstPos != -1 && secondPos != -1) {
+	if (firstPos != std::string::npos && secondPos != std::string::npos) {
 		_value = line.substr(firstPos + 1, 1);
 		line.erase(firstPos, secondPos);
 	}
@@ -210,11 +210,10 @@ void nts::Parsing::setComponent()
 {
 	nts::IComponent *component = nullptr;
 	try {
-		 component = &create(_type, _value);
+		 component = create(_type, _value);
 	} catch(nts::errorParsing &e) {
 		throw nts::errorParsing(e.getMessage(), e.getIndication());
 	}
-	std::cout << _name.data() << std::endl;
 	if (_components.find(_name) != _components.end()) {
 		throw nts::errorParsing("Multiple definition of ", _name);
 	}
@@ -277,8 +276,6 @@ void nts::Parsing::stockLinks(std::string &line)
 		throw nts::errorParsing("No semicolon delimiter in the line : ",
 			line);
 	std::string name = line.substr(0, posSemicolons);
-	if (_components.find(name) == _components.end())
-		throw nts::errorParsing("Name in section link is unknow : ", name);
 	posSpace = line.find(' ');
 	std::string value = line.substr(posSemicolons + 1,
 		(posSpace - 1) - posSemicolons);
@@ -325,32 +322,20 @@ void nts::Parsing::parseFile()
 			_name = "";
 			_value = "";
 		}
-		/*int cpt1 = 0;
-		int cpt2 = 1;
-		std::cout << _NameLink.size() << std::endl;
-		for (unsigned int i = 0; i != _NameLink.size(); i = i + 2) {
-			_MapInfoFile
-			nts::IComponent *Componnent1;
-			nts::IComponent *Componnent2;
+		for (unsigned int i = 0; i != _nameLink.size(); i = i + 2) {
+			std::string name1 = _nameLink[i];
+			std::string name2 = _nameLink[i + 1];
+			nts::IComponent *component1 = _components.at(name1);
+			nts::IComponent *component2 = _components.at(name2);
 
-			if (_FileMap[_NameLink[cpt1]] == "input" && IsComponent(_FileMap[_NameLink[cpt2]]) == 0) {
-
-				_NameLink[cpt1]->setLink(atoi(_ValueLink[0].c_str()), _NameLink[1], atoi(_ValueLink[1].c_str()));
-				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
+			if (!ISINMAP(name1, _components) || !ISINMAP(name2, _components))
+				throw nts::errorParsing("link name is not good", "");
+			if (ISINMAP(name1, _outputs) || ISINMAP(name2, _inputs)) {
+				component1->setLink((unsigned int) atoi(_valueLink[i].c_str()), *component2, (unsigned int) atoi(_valueLink[i + 1].c_str()));
+			} else {
+				component2->setLink((unsigned int) atoi(_valueLink[i + 1].c_str()), *component1, (unsigned int) atoi(_valueLink[i].c_str()));
 			}
-			if (IsComponent(_FileMap[_NameLink[cpt1]]) == 0 && _FileMap[_NameLink[cpt2]] == "input") {
-				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
-			}
-			if (IsComponent(_FileMap[_NameLink[cpt1]]) == 0 && _FileMap[_NameLink[cpt2]] == "output") {
-				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
-			}
-			if (_FileMap[_NameLink[cpt1]] == "output" && IsComponent(_FileMap[_NameLink[cpt2]]) == 0) {
-				//nts::IComponent::setLink(atoi(_ValueLink[0].data()), _NameLink[1], atoi(_ValueLink[1].data()));
-				std::cout << _ValueLink[cpt1]  << "   " << _NameLink[cpt2] << "    " << _ValueLink[cpt2] << std::endl;
-			}
-			cpt1 = cpt1 + 2;
-			cpt2 = cpt2 + 2;
-		}*/
+		}
 		verifEmptyArg();
 		chipsetsOrLinksIsNotInFile();
 	} else {
@@ -370,11 +355,11 @@ nts::Tristate nts::Parsing::transformValue(std::string const &value)
 	return tri;
 }
 
-nts::IComponent &nts::Parsing::create(std::string const &type,
+nts::IComponent *nts::Parsing::create(std::string const &type,
 	std::string const &value
 )
 {
-	std::unordered_map<std::string, nts::IComponent *> types = {
+	static std::unordered_map<std::string, nts::IComponent *> types = {
 		{"input", new nts::Input()},
 		{"output", new nts::Output()},
 		{"clock", new nts::Clock()},
@@ -404,14 +389,9 @@ nts::IComponent &nts::Parsing::create(std::string const &type,
 
 	nts::IComponent *component = types[type];
 
-	for (auto &it : types) {
-		if (it.first != type)
-			delete it.second;
-	}
-
 	if (!value.empty() && (type == "input" || type == "clock"
 		|| type == "true" || type == "false")) {
 		((nts::Input *) component)->setValue(transformValue(value));
 	}
-	return *component;
+	return component->copy();
 }

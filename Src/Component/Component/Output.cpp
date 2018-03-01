@@ -12,16 +12,20 @@ nts::Output::Output()
 	_pin_number = 1;
 }
 
-nts::Output::Output(nts::Output const &toCopy)
+nts::Output::Output(nts::Output const &data)
 {
-	(void) toCopy;
-	delete this;
+	_pin_number = data._pin_number;
+	_pinsArgument = std::map<long unsigned int, std::size_t>(data._pinsArgument);
+	_pins = std::map<long unsigned int, nts::IComponent *>(data._pins);
+	_res = data._res;
 }
 
-nts::Output &nts::Output::operator=(nts::Output const &toCopy)
+nts::Output& nts::Output::operator=(nts::Output const &data)
 {
-	(void) toCopy;
-	delete this;
+	_pin_number = data._pin_number;
+	_pinsArgument = std::map<long unsigned int, std::size_t>(data._pinsArgument);
+	_pins = std::map<long unsigned int, nts::IComponent *>(data._pins);
+	_res = data._res;
 	return *this;
 }
 
@@ -33,10 +37,16 @@ std::ostream &operator<<(std::ostream &os, nts::Output const &data)
 
 nts::Tristate nts::Output::compute(size_t pin)
 {
-	return getPins(pin);
+	(void) pin;
+	return getPins(1);
 }
 
 void nts::Output::dump() const
 {
 	std::cout << "Output" << std::endl;
+}
+
+nts::Output *nts::Output::copy() const
+{
+	return new nts::Output(*this);
 }

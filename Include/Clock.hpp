@@ -12,7 +12,7 @@
 #include "Input.hpp"
 
 namespace nts {
-	class Clock: public nts::Input {
+	class Clock: public nts::AbstractComponent {
 	public:
 		// Constructor
 		Clock();
@@ -31,11 +31,17 @@ namespace nts {
 		// Setter
 
 		// Other
-		void dump() const;
+		nts::Tristate compute(std::size_t pin) override;
+		void setValue(nts::Tristate = nts::UNDEFINED);
+		void setLink(std::size_t pin, nts::IComponent &other,
+			std::size_t otherPin) override;
+		void dump() const override;
+		nts::Clock *copy() const override;
 
 	protected:
 
 	private:
+		nts::Tristate _value = nts::UNDEFINED;
 	};
 }
 std::ostream &operator<<(std::ostream &os, nts::Clock const &);
