@@ -32,6 +32,28 @@ static const std::vector<std::string> TYPES({
 nts::Parsing::Parsing(std::string &fileName, int &ac, char **&av) : _fileName(
 	fileName), _ac(ac), _av(av)
 {
+	factory.add("input", new nts::Input());
+	factory.add("output", new nts::Output());
+	factory.add("true", new nts::Input());
+	factory.add("false", new nts::Input());
+	factory.add("clock", new nts::Clock());
+	//factory.add("2716", new nts::Input());
+	factory.add("4001", new nts::HEF4001B());
+	factory.add("4008", new nts::CD4008BMS());
+	factory.add("4011", new nts::CD4011B());
+	//factory.add("4013", new nts::CD4011B());
+	//factory.add("4017", new nts::CD4011B());
+	factory.add("4030", new nts::CD4011B());
+	//factory.add("4040", new nts::CD4011B());
+	//factory.add("4069", new nts::CD4011B());
+	factory.add("4071", new nts::CD4011B());
+	factory.add("4081", new nts::CD4011B());
+	factory.add("4094", new nts::CD4011B());
+	//factory.add("4503", new nts::CD4011B());
+	factory.add("4512", new nts::CD4011B());
+	factory.add("4514", new nts::CD4011B());
+	//factory.add("i4004", new nts::CD4011B());
+	//factory.add("mk4801", new nts::CD4011B());
 	parseArgument();
 	parseFile();
 }
@@ -359,35 +381,11 @@ nts::IComponent *nts::Parsing::create(std::string const &type,
 	std::string const &value
 )
 {
-	static std::unordered_map<std::string, nts::IComponent *> types = {
-		{"input", new nts::Input()},
-		{"output", new nts::Output()},
-		{"clock", new nts::Clock()},
-		{"true", new nts::Input()},
-		{"false", new nts::Input()},
-		//"2716",
-		{"4001", new nts::HEF4001B()},
-		{"4008", new nts::CD4008BMS()},
-		{"4011", new nts::CD4011B()},
-		//{"4013", new nts::},
-		//{"4017", },
-		{"4030", new nts::CD4030C()},
-		//"4040",
-		{"4069", new nts::CD4069UBC()},
-		{"4071", new nts::HEF4071B()},
-		{"4081", new nts::HCF4081B()},
-		//"4094",
-		//"4503",
-		{"4512", new nts::CD4512B()},
-		{"4514", new nts::CD4514BC()},
-		//"i4004",
-		//{"mk4801", }
-	};
+	nts::IComponent *component = factory.create(type);
 
-	if (types.find(type) == types.end())
+	if (component == nullptr)
 		throw nts::errorParsing("Unknow type: ", type);
 
-	nts::IComponent *component = types[type];
 
 	if (!value.empty() && (type == "input" || type == "clock"
 		|| type == "true" || type == "false")) {

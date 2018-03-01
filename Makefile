@@ -34,7 +34,8 @@ SRCS	= 	Src/Parsing/Main.cpp		\
 		Src/Component/Component/OrGate.cpp	\
 		Src/Component/Component/RSNorLatchComponent.cpp	\
 		Src/Component/Component/XorGate.cpp	\
-		Src/Component/Component/Output.cpp
+		Src/Component/Component/Output.cpp	\
+		Src/Factory.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

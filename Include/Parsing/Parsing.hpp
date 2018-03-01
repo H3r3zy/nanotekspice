@@ -16,6 +16,7 @@
 #include "Output.hpp"
 #include "ErrorParsing.hpp"
 #include "IComponent.hpp"
+#include "Factory.hpp"
 
 namespace nts {
 	class Parsing {
@@ -33,6 +34,9 @@ namespace nts {
 		std::map<std::string, nts::Clock *> &getClocks();
 
 	private:
+		// Factory
+		Factory<nts::IComponent> factory;
+
 		// Parse
 		void parseFile();
 		void parseArgument();
