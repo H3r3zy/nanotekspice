@@ -63,8 +63,6 @@ void nts::Parsing::verifEqualArgument(std::string &arg)
 	unsigned long int equal = arg.find('=');
 	unsigned long int posEqual = arg.find_last_of('=');
 
-	std::cout << "aa" << std::endl;
-
 	if (equal == std::string::npos)
 		throw nts::errorParsing("Argument need value : ", arg);
 	if (equal != posEqual || (equal == std::string::npos || posEqual == std::string::npos))
@@ -76,7 +74,6 @@ std::string nts::Parsing::stockNameArg(std::string &arg)
 	long unsigned int equal = arg.find('=');
 	std::string name = "";
 
-	std::cout << "bb" << std::endl;
 	if (equal != std::string::npos)
 		name = arg.substr(0, equal);
 	return (name);
@@ -86,7 +83,6 @@ std::string nts::Parsing::stockValueArg(std::string &arg)
 {
 	long unsigned int equal = arg.find('=');
 
-	std::cout << "cc" << std::endl;
 	std::string value = "";
 	if (equal == std::string::npos) {
 		value = arg.substr(equal + 1, arg.size() - (equal + 1));
@@ -167,28 +163,20 @@ void nts::Parsing::delComment(std::string &line)
 		line.erase(posComment, (line.size() - posComment));
 }
 
-int nts::Parsing::verifChipset(std::string &line)
+int nts::Parsing::verif(std::string &line)
 {
 	int ret = 0;
 	std::size_t chipsetIsOk = line.find(".chipsets:");
+	std::size_t linkIsOk = line.find(".links:");
 
 	if (chipsetIsOk != std::string::npos) {
 		_posInFile = 1;
 		_chipsetInFile = true;
-		ret = -1;
-	}
-	return (ret);
-}
-
-int nts::Parsing::verifLink(std::string &line)
-{
-	int ret = 0;
-	std::size_t linksIsOk = line.find(".links:");
-
-	if (linksIsOk != std::string::npos) {
+		ret = 1;
+	} else if (linkIsOk != std::string::npos) {
 		_posInFile = 2;
 		_linkInFile = true;
-		ret = -1;
+		ret = 2;
 	}
 	return (ret);
 }
@@ -306,15 +294,21 @@ void nts::Parsing::stockLinks(std::string &line)
 	if (posSemicolons == secondPosSemicolons)
 		throw nts::errorParsing("No semicolon delimiter in the line : ",
 			line);
-	std::string name = line.substr(0, posSemicolons);
+	std::string name;
+	if (posSemicolons != std::string::npos)
+		name = line.substr(0, posSemicolons);
 	posSpace = line.find(' ');
-	std::string value = line.substr(posSemicolons + 1,
+	std::string value;
+	if (posSpace != std::string::npos && posSemicolons != std::string::npos)
+		value = line.substr(posSemicolons + 1,
 		(posSpace - 1) - posSemicolons);
 	_nameLink.push_back(name);
 	_valueLink.push_back(value);
 	posSpace = line.find_last_of(' ');
-	name = line.substr(posSpace + 1, secondPosSemicolons - 1 - posSpace);
-	value = line.substr(secondPosSemicolons + 1, line.size());
+	if (posSpace != std::string::npos)
+		name = line.substr(posSpace + 1, secondPosSemicolons - 1 - posSpace);
+	if (secondPosSemicolons != std::string::npos)
+		value = line.substr(secondPosSemicolons + 1, line.size());
 	_nameLink.push_back(name);
 	_valueLink.push_back(value);
 }
@@ -327,12 +321,12 @@ void nts::Parsing::parseLine(std::string &line)
 	delSpaceAndTab(line);
 	if (line.empty())
 		return;
-	ret = verifLink(line);
-	if (_posInFile == 2 && ret == 0)
-		stockLinks(line);
-	ret = verifChipset(line);
+	ret = verif(line);
 	if (_posInFile == 1 && ret == 0)
 		stockChipset(line);
+	if (_posInFile == 2 && ret == 0)
+		stockLinks(line);
+
 }
 
 void nts::Parsing::verifEmptyArg()

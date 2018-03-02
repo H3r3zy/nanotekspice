@@ -56,8 +56,7 @@ namespace nts {
 		void defineValue(std::string &line);
 
 		// Verification
-		int verifLink(std::string &line);
-		int verifChipset(std::string &line);
+		int verif(std::string &line);
 		void verifEmptyArg();
 		void verifEqualArgument(std::string &arg);
 		//int isComponent(std::string &name);
