@@ -65,7 +65,7 @@ void nts::Parsing::verifEqualArgument(std::string &arg)
 
 	if (equal == std::string::npos)
 		throw nts::errorParsing("Argument need value : ", arg);
-	if (equal != posEqual || (equal == std::string::npos || posEqual == std::string::npos))
+	if (equal != posEqual || (equal != std::string::npos && posEqual != std::string::npos))
 		throw nts::errorParsing("Multi equal is not allowed : ", arg);
 }
 
@@ -79,7 +79,7 @@ std::string nts::Parsing::stockNameArg(std::string &arg)
 	return (name);
 }
 
-std::string nts::Parsing::stockValueArg(std::string &arg)	
+std::string nts::Parsing::stockValueArg(std::string &arg)
 {
 	long unsigned int equal = arg.find('=');
 
@@ -131,6 +131,8 @@ std::map<std::string, nts::Clock *>& nts::Parsing::getClocks()
 
 void nts::Parsing::delSpaceAndTab(std::string &line)
 {
+	if (line.empty())
+		return;
 	std::size_t pos = line.find('\t');
 	while (pos != std::string::npos) {
 		line.replace(pos, 1, " ");
@@ -326,7 +328,6 @@ void nts::Parsing::parseLine(std::string &line)
 		stockChipset(line);
 	if (_posInFile == 2 && ret == 0)
 		stockLinks(line);
-
 }
 
 void nts::Parsing::verifEmptyArg()
