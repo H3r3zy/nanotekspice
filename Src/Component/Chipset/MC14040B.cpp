@@ -63,11 +63,14 @@ nts::Tristate nts::MC14040B::compute(size_t pin)
 	if (pin == 1 || pin == 2 || pin == 3 || pin == 4 || pin == 5 ||
 		pin == 6 || pin == 7 || pin == 9 || pin == 12 || pin == 13 ||
 		pin == 14 || pin == 15) {
-		if (inhib != nts::FALSE)
+		if (inhib != nts::FALSE) {
 			_res = inhib;
-		else {
-			if (clock == nts::TRUE && c == 0)
+			tmp = clock;
+		} else {
+			if ((clock == nts::FALSE && c == 0 && !first) || (first && clock == nts::FALSE && lastClock != nts::UNDEFINED)) {
 				_counter++;
+				first = false;
+			}
 			if (_counter > 4096)
 				_counter = 0;
 			std::string bin = std::bitset<12>(_counter).to_string();
@@ -76,6 +79,7 @@ nts::Tristate nts::MC14040B::compute(size_t pin)
 				_res = nts::TRUE;
 			else
 				_res = nts::FALSE;
+			tmp = clock;
 		}
 	} else {
 		_res = getPins(pin);
@@ -91,4 +95,10 @@ void nts::MC14040B::dump() const
 nts::MC14040B *nts::MC14040B::copy() const
 {
 	return new nts::MC14040B(*this);
+}
+
+void nts::MC14040B::reset()
+{
+	cycle = 0;
+	lastClock = tmp;
 }

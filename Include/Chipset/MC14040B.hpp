@@ -33,10 +33,14 @@ namespace nts {
 		nts::Tristate compute(std::size_t pin) override;
 		void dump() const override;
 		nts::MC14040B *copy() const override;
+		void reset() override;
 	protected:
 
 	private:
 		unsigned int _counter = 0;
+		nts::Tristate lastClock = nts::UNDEFINED;
+		nts::Tristate tmp = nts::UNDEFINED;
+		bool first = true;
 	};
 }
 
