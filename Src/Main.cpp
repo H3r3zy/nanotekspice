@@ -5,8 +5,13 @@
 ** Created by quentin.le-bars@epitech.eu,
 */
 
+#include <algorithm>
+#include <functional>
+#include <csignal>
 #include "Parsing.hpp"
 #include "ErrorParsing.hpp"
+#include "Executor.hpp"
+#include "Interpretor.hpp"
 
 int main(int ac, char **av)
 {
@@ -14,23 +19,18 @@ int main(int ac, char **av)
 		std::cout
 			<< "./nanotekspice circuit_file.nts input_name="
 				"input_value" << std::endl;
-		return (1);
+		return (0);
 	}
 	try {
 		nts::Parsing P(*new std::string(av[1]), ac, av);
-		std::map<std::string, nts::IComponent *> components = P.getComponents();
-		std::map<std::string, nts::Input *> inputs = P.getInputs();
-		std::map<std::string, nts::Output *> outputs = P.getOutputs();
-		std::map<std::string, nts::Clock *> clocks = P.getClocks();
-
-		for (auto &it: outputs) {
-			std::cout << it.first << ": ";
-			std::cout << it.second->compute(1) << std::endl;
-
-		}
+		Interpretor interpretor(P);
+		interpretor.run();
 	} catch (nts::errorParsing const &message) {
-		std::cout << message.getMessage() << message.getIndication()
+		std::cerr << message.getMessage() << message.getIndication()
 			<< std::endl;
+		return (1);
+	} catch (std::out_of_range &e) {
+		std::cerr << e.what() << std::endl;
 		return (1);
 	}
 	// take argument

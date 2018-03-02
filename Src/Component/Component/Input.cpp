@@ -53,7 +53,7 @@ void nts::Input::setLink(std::size_t pin, nts::IComponent &other,
 
 void nts::Input::dump() const
 {
-	std::cout << "Input" << std::endl;
+	std::cout << "Input: " << _value << std::endl;
 }
 
 nts::Input *nts::Input::copy() const

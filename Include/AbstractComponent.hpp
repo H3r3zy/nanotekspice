@@ -18,7 +18,7 @@ namespace nts {
 		// Constructor
 
 		// Destructor
-		virtual ~AbstractComponent() override = default;
+		virtual ~AbstractComponent() = default;
 
 		// Operator
 
@@ -27,7 +27,7 @@ namespace nts {
 
 		// Setter
 		virtual void setLink(std::size_t pin, nts::IComponent &other,
-			std::size_t otherPin) override;
+			std::size_t otherPin);
 
 		// Other
 		virtual nts::Tristate compute(std::size_t pin) = 0;

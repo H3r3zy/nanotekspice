@@ -11,7 +11,7 @@ CC	= g++
 
 RM	= rm -f
 
-SRCS	= 	Src/Parsing/Main.cpp		\
+SRCS	= 	Src/Main.cpp		\
 	  	Src/Parsing/Parsing.cpp	\
 	  	Src/Parsing/ErrorParsing.cpp	\
 		Src/Component/AbstractComponent.cpp	\
@@ -35,7 +35,9 @@ SRCS	= 	Src/Parsing/Main.cpp		\
 		Src/Component/Component/RSNorLatchComponent.cpp	\
 		Src/Component/Component/XorGate.cpp	\
 		Src/Component/Component/Output.cpp	\
-		Src/Factory.cpp
+		Src/Factory.cpp	\
+		Src/Interpretor.cpp \
+		Src/Executor.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
