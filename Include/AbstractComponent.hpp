@@ -33,6 +33,7 @@ namespace nts {
 		virtual nts::Tristate compute(std::size_t pin) = 0;
 
 		virtual void dump() const = 0;
+		void reset();
 
 	protected:
 		nts::Tristate _res = nts::UNDEFINED;
@@ -43,6 +44,9 @@ namespace nts {
 		std::string &tristate2Value(nts::Tristate tristate) const;
 		nts::Tristate value2Tristate(std::string &value) const;
 		nts::Tristate value2Tristate(char value) const;
+
+		unsigned int _maxUsePerCycle = 1000;
+		unsigned int cycle = 0;
 	private:
 
 	};

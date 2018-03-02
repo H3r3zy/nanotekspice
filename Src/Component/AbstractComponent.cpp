@@ -21,6 +21,9 @@ void nts::AbstractComponent::setLink(std::size_t pin, nts::IComponent &other,
 
 nts::Tristate nts::AbstractComponent::getPins(size_t pin)
 {
+	cycle++;
+	if (cycle > _maxUsePerCycle)
+		return nts::UNDEFINED;
 	nts::Tristate res;
 	try {
 		res = (pin > 0 && pin <= _pin_number) ?
@@ -69,4 +72,9 @@ nts::Tristate nts::AbstractComponent::value2Tristate(const char value) const
 		res = nts::FALSE;
 	}
 	return res;
+}
+
+void nts::AbstractComponent::reset()
+{
+	cycle = 0;
 }

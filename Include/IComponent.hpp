@@ -21,7 +21,6 @@ namespace nts {
 	public:
 		virtual ~IComponent() = default;
 
-	public:
 		virtual nts::Tristate compute(std::size_t pin) = 0;
 
 		virtual void setLink(std::size_t pin, nts::IComponent &other,
@@ -29,6 +28,7 @@ namespace nts {
 
 		virtual void dump() const = 0;
 		virtual nts::IComponent *copy() const = 0;
+		virtual void reset() = 0;
 	};
 }
 

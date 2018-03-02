@@ -15,6 +15,9 @@ Interpretor::Interpretor(nts::Parsing &parser) :
 	clocks(parser.getClocks())
 {
 	exec.add("simulate", ([this] {
+		for (auto it: components) {
+			it.second->reset();
+		}
 		for (auto it: clocks) {
 			(*it.second)();
 		}
