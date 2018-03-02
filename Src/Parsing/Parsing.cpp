@@ -63,17 +63,22 @@ void nts::Parsing::verifEqualArgument(std::string &arg)
 	unsigned long int equal = arg.find('=');
 	unsigned long int posEqual = arg.find_last_of('=');
 
+	std::cout << "aa" << std::endl;
+
 	if (equal == std::string::npos)
 		throw nts::errorParsing("Argument need value : ", arg);
-	if (equal != posEqual || (equal == std::string::npos && posEqual == std::string::npos))
+	if (equal != posEqual || (equal == std::string::npos || posEqual == std::string::npos))
 		throw nts::errorParsing("Multi equal is not allowed : ", arg);
 }
 
 std::string nts::Parsing::stockNameArg(std::string &arg)
 {
 	long unsigned int equal = arg.find('=');
+	std::string name = "";
 
-	std::string name = arg.substr(0, equal);
+	std::cout << "bb" << std::endl;
+	if (equal != std::string::npos)
+		name = arg.substr(0, equal);
 	return (name);
 }
 
@@ -81,9 +86,13 @@ std::string nts::Parsing::stockValueArg(std::string &arg)
 {
 	long unsigned int equal = arg.find('=');
 
-	std::string value = arg.substr(equal + 1, arg.size() - (equal + 1));
-	if (AUTHORIZED_VALUE.find(value) == std::string::npos)
-		throw nts::errorParsing("Value is 0 or 1 not ", value);
+	std::cout << "cc" << std::endl;
+	std::string value = "";
+	if (equal == std::string::npos) {
+		value = arg.substr(equal + 1, arg.size() - (equal + 1));
+		if (AUTHORIZED_VALUE.find(value) == std::string::npos)
+			throw nts::errorParsing("Value is 0 or 1 not ", value);
+	}
 	return (value);
 }
 
@@ -137,13 +146,13 @@ void nts::Parsing::delSpaceAndTab(std::string &line)
 		pos = line.find("  ", pos);
 	}
 	pos = line.find(' ');
-	while (pos == 0) {
+	while (pos == 0 && pos != std::string::npos) {
 		line.erase(0, 1);
 		pos = line.find(' ');
 	}
 	if (_posInFile == 2) {
 		pos = line.find_last_of(' ');
-		while (pos + 1 == line.size()) {
+		while (pos != std::string::npos && pos + 1 == line.size()) {
 			line.erase(pos, 1);
 			pos = line.find_last_of(' ');
 		}
@@ -154,7 +163,7 @@ void nts::Parsing::delComment(std::string &line)
 {
 	std::size_t posComment = line.find('#');
 
-	if (!posComment)
+	if (posComment != std::string::npos)
 		line.erase(posComment, (line.size() - posComment));
 }
 
@@ -163,7 +172,7 @@ int nts::Parsing::verifChipset(std::string &line)
 	int ret = 0;
 	std::size_t chipsetIsOk = line.find(".chipsets:");
 
-	if (!chipsetIsOk) {
+	if (chipsetIsOk != std::string::npos) {
 		_posInFile = 1;
 		_chipsetInFile = true;
 		ret = -1;
@@ -176,7 +185,7 @@ int nts::Parsing::verifLink(std::string &line)
 	int ret = 0;
 	std::size_t linksIsOk = line.find(".links:");
 
-	if (!linksIsOk) {
+	if (linksIsOk != std::string::npos) {
 		_posInFile = 2;
 		_linkInFile = true;
 		ret = -1;
