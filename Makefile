@@ -37,7 +37,8 @@ SRCS	= 	Src/Main.cpp		\
 		Src/Component/Component/Output.cpp	\
 		Src/Factory.cpp	\
 		Src/Interpretor.cpp \
-		Src/Executor.cpp
+		Src/Executor.cpp	\
+		Src/Component/Chipset/MC14040B.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
