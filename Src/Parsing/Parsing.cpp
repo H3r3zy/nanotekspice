@@ -126,6 +126,8 @@ std::map<std::string, nts::Clock *>& nts::Parsing::getClocks()
 
 void nts::Parsing::delSpaceAndTab(std::string &line)
 {
+	if (line.empty())
+		return;
 	std::size_t pos = line.find('\t');
 	while (pos != std::string::npos) {
 		line.replace(pos, 1, " ");
@@ -316,14 +318,17 @@ void nts::Parsing::parseLine(std::string &line)
 
 	delComment(line);
 	delSpaceAndTab(line);
-	if (line.empty())
+	if (line.empty()) {
 		return;
+	}
 	ret = verifLink(line);
-	if (_posInFile == 2 && ret == 0)
+	if (_posInFile == 2 && ret == 0) {
 		stockLinks(line);
+	}
 	ret = verifChipset(line);
-	if (_posInFile == 1 && ret == 0)
+	if (_posInFile == 1 && ret == 0) {
 		stockChipset(line);
+	}
 }
 
 void nts::Parsing::verifEmptyArg()
@@ -335,6 +340,7 @@ void nts::Parsing::verifEmptyArg()
 void nts::Parsing::parseFile()
 {
 	std::ifstream file(_fileName.c_str());
+	std::cout << "in" << std::endl;
 
 	if (file) {
 		std::string line;
@@ -350,8 +356,9 @@ void nts::Parsing::parseFile()
 			nts::IComponent *component1 = _components.at(name1);
 			nts::IComponent *component2 = _components.at(name2);
 
-			if (!ISINMAP(name1, _components) || !ISINMAP(name2, _components))
+			if (!ISINMAP(name1, _components) || !ISINMAP(name2, _components)) {
 				throw nts::errorParsing("link name is not good", "");
+			}
 			if (ISINMAP(name1, _outputs) || ISINMAP(name2, _inputs)) {
 				component1->setLink((unsigned int) atoi(_valueLink[i].c_str()), *component2, (unsigned int) atoi(_valueLink[i + 1].c_str()));
 			} else {
