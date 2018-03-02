@@ -34,6 +34,8 @@ nts::CD4069UBC& nts::CD4069UBC::operator=(nts::CD4069UBC const &data)
 	gate2 = data.gate2;
 	gate3 = data.gate3;
 	gate4 = data.gate4;
+	gate5 = data.gate5;
+	gate6 = data.gate6;
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
@@ -45,11 +47,11 @@ nts::CD4069UBC& nts::CD4069UBC::operator=(nts::CD4069UBC const &data)
 nts::CD4069UBC::CD4069UBC(nts::CD4069UBC const &data)
 {
 	gate1 = data.gate1;
-	gate1 = data.gate2;
-	gate1 = data.gate3;
-	gate1 = data.gate4;
-	gate1 = data.gate5;
-	gate1 = data.gate6;
+	gate2 = data.gate2;
+	gate3 = data.gate3;
+	gate4 = data.gate4;
+	gate5 = data.gate5;
+	gate6 = data.gate6;
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
