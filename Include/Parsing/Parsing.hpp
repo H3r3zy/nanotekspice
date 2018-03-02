@@ -67,6 +67,11 @@ namespace nts {
 		// Setter / Editer
 		void modifValueWithArg();
 		void setComponent();
+		void setLinks();
+		void inVector(unsigned long int posSpace,
+			unsigned long int posSemicolons,
+			unsigned long int secondPosSemicolons,
+			std::string line);
 
 		// Creation
 		nts::IComponent *create(std::string const &, std::string const &);

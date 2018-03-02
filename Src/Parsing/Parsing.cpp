@@ -24,11 +24,11 @@
 #include "Output.hpp"
 
 const std::string AUTHORIZED_VALUE("01");
-const std::vector<std::string> TYPES({
-	"input", "output", "clock", "true", "false", "2716", "4001", "4008",
-	"4011", "4013", "4017", "4030", "4040", "4069", "4071", "4081",
-	"4094", "4503", "4512", "4514",	"i4004", "mk4801"
-});
+
+const std::vector <std::string> TYPES(
+	{"input", "output", "clock", "true", "false", "2716", "4001", "4008",
+		"4011", "4013", "4017", "4030", "4040", "4069", "4071", "4081",
+		"4094", "4503", "4512", "4514", "i4004", "mk4801"});
 
 nts::Parsing::Parsing(std::string &fileName, int &ac, char **&av) : _fileName(
 	fileName), _ac(ac), _av(av)
@@ -49,8 +49,8 @@ nts::Parsing::Parsing(std::string &fileName, int &ac, char **&av) : _fileName(
 	factory.add("4069", new nts::CD4069UBC());
 	factory.add("4071", new nts::HEF4071B());
 	factory.add("4081", new nts::HCF4081B());
-//	factory.add("4094", new nts::4094());
-//	factory.add("4503", new nts::CD4011B());
+	//factory.add("4094", new nts::4094());
+	//factory.add("4503", new nts::CD4011B());
 	factory.add("4512", new nts::CD4512B());
 	factory.add("4514", new nts::CD4514BC());
 	//factory.add("i4004", new nts::CD4011B());
@@ -66,7 +66,8 @@ void nts::Parsing::verifEqualArgument(std::string &arg)
 
 	if (equal == std::string::npos)
 		throw nts::errorParsing("Argument need value : ", arg);
-	if (equal != posEqual || (equal == std::string::npos && posEqual == std::string::npos))
+	if (equal != posEqual ||
+		(equal == std::string::npos && posEqual == std::string::npos))
 		throw nts::errorParsing("Multi equal is not allowed : ", arg);
 }
 
@@ -125,7 +126,7 @@ std::map<std::string, nts::Output *> &nts::Parsing::getOutputs()
 	return _outputs;
 }
 
-std::map<std::string, nts::Clock *>& nts::Parsing::getClocks()
+std::map<std::string, nts::Clock *> &nts::Parsing::getClocks()
 {
 	return _clocks;
 }
@@ -202,8 +203,8 @@ void nts::Parsing::defineName(std::string &line)
 {
 	delSpaceAndTab(line);
 	if (line.empty())
-		throw nts::errorParsing("Error no name specified for the type : ",
-			_type);
+		throw nts::errorParsing(
+			"Error no name specified for the type : ", _type);
 	else {
 		_name = line;
 	}
@@ -224,7 +225,8 @@ void nts::Parsing::defineValue(std::string &line)
 		_value = line.substr(firstPos + 1, 1);
 		line.erase(firstPos, secondPos);
 	}
-	if (AUTHORIZED_VALUE.find(_value) == std::string::npos && !_value.empty())
+	if (AUTHORIZED_VALUE.find(_value) == std::string::npos &&
+		!_value.empty())
 		throw nts::errorParsing("Value is 0 or 1 not ", _value);
 }
 
@@ -232,21 +234,21 @@ void nts::Parsing::setComponent()
 {
 	nts::IComponent *component = nullptr;
 	try {
-		 component = create(_type, _value);
-	} catch(nts::errorParsing &e) {
+		component = create(_type, _value);
+	} catch (nts::errorParsing &e) {
 		throw nts::errorParsing(e.getMessage(), e.getIndication());
 	}
 	if (_components.find(_name) != _components.end()) {
 		throw nts::errorParsing("Multiple definition of ", _name);
 	}
-	_components.insert(std::pair<std::string, nts::IComponent *>(_name, component));
-
+	_components.insert(
+		std::pair<std::string, nts::IComponent *>(_name, component));
 	if (_type == "clock")
-		_clocks[_name] = (nts::Clock *) component;
+		_clocks[_name] = (nts::Clock *)component;
 	if (_type == "input")
-		_inputs[_name] = (nts::Input *) component;
+		_inputs[_name] = (nts::Input *)component;
 	if (_type == "output")
-		_outputs[_name] = (nts::Output *) component;
+		_outputs[_name] = (nts::Output *)component;
 }
 
 void nts::Parsing::modifValueWithArg()
@@ -284,6 +286,30 @@ void nts::Parsing::chipsetsOrLinksIsNotInFile()
 		throw nts::errorParsing("Links section not in file.", "");
 }
 
+void nts::Parsing::inVector(unsigned long int posSpace,
+	unsigned long int posSemicolons, unsigned long int secondPosSemicolons,
+	std::string line)
+{
+	std::string name;
+	if (posSemicolons != std::string::npos)
+		name = line.substr(0, posSemicolons);
+	posSpace = line.find(' ');
+	std::string value;
+	if (posSpace != std::string::npos && posSemicolons != std::string::npos)
+		value = line.substr(posSemicolons + 1,
+			(posSpace - 1) - posSemicolons);
+	_nameLink.push_back(name);
+	_valueLink.push_back(value);
+	posSpace = line.find_last_of(' ');
+	if (posSpace != std::string::npos)
+		name = line.substr(posSpace + 1,
+			secondPosSemicolons - 1 - posSpace);
+	if (secondPosSemicolons != std::string::npos)
+		value = line.substr(secondPosSemicolons + 1, line.size());
+	_nameLink.push_back(name);
+	_valueLink.push_back(value);
+}
+
 void nts::Parsing::stockLinks(std::string &line)
 {
 	unsigned long int posSpace = line.find(' ');
@@ -297,23 +323,7 @@ void nts::Parsing::stockLinks(std::string &line)
 	if (posSemicolons == secondPosSemicolons)
 		throw nts::errorParsing("No semicolon delimiter in the line : ",
 			line);
-	std::string name;
-	if (posSemicolons != std::string::npos)
-		name = line.substr(0, posSemicolons);
-	posSpace = line.find(' ');
-	std::string value;
-	if (posSpace != std::string::npos && posSemicolons != std::string::npos)
-		value = line.substr(posSemicolons + 1,
-		(posSpace - 1) - posSemicolons);
-	_nameLink.push_back(name);
-	_valueLink.push_back(value);
-	posSpace = line.find_last_of(' ');
-	if (posSpace != std::string::npos)
-		name = line.substr(posSpace + 1, secondPosSemicolons - 1 - posSpace);
-	if (secondPosSemicolons != std::string::npos)
-		value = line.substr(secondPosSemicolons + 1, line.size());
-	_nameLink.push_back(name);
-	_valueLink.push_back(value);
+	inVector(posSpace, posSemicolons, secondPosSemicolons, line);
 }
 
 void nts::Parsing::parseLine(std::string &line)
@@ -334,7 +344,33 @@ void nts::Parsing::parseLine(std::string &line)
 void nts::Parsing::verifEmptyArg()
 {
 	if (!_nameArg.empty())
-		throw nts::errorParsing("Error with the name of argument : ", "");
+		throw nts::errorParsing("Error with the name of argument : ",
+			"");
+}
+
+void nts::Parsing::setLinks()
+{
+	for (unsigned int i = 0; i != _nameLink.size(); i = i + 2) {
+		std::string name1 = _nameLink[i];
+		std::string name2 = _nameLink[i + 1];
+		nts::IComponent *component1 = _components.at(name1);
+		nts::IComponent *component2 = _components.at(name2);
+
+		if (!ISINMAP(name1, _components) ||
+			!ISINMAP(name2, _components))
+			throw nts::errorParsing("link name is not good", "");
+		if (ISINMAP(name1, _outputs) || ISINMAP(name2, _inputs)) {
+			component1->setLink(
+				(unsigned int)atoi(_valueLink[i].c_str()),
+				*component2,
+				(unsigned int)atoi(_valueLink[i + 1].c_str()));
+		} else {
+			component2->setLink(
+				(unsigned int)atoi(_valueLink[i + 1].c_str()),
+				*component1,
+				(unsigned int)atoi(_valueLink[i].c_str()));
+		}
+	}
 }
 
 void nts::Parsing::parseFile()
@@ -349,24 +385,12 @@ void nts::Parsing::parseFile()
 			_name = "";
 			_value = "";
 		}
-		for (unsigned int i = 0; i != _nameLink.size(); i = i + 2) {
-			std::string name1 = _nameLink[i];
-			std::string name2 = _nameLink[i + 1];
-			nts::IComponent *component1 = _components.at(name1);
-			nts::IComponent *component2 = _components.at(name2);
-
-			if (!ISINMAP(name1, _components) || !ISINMAP(name2, _components))
-				throw nts::errorParsing("link name is not good", "");
-			if (ISINMAP(name1, _outputs) || ISINMAP(name2, _inputs)) {
-				component1->setLink((unsigned int) atoi(_valueLink[i].c_str()), *component2, (unsigned int) atoi(_valueLink[i + 1].c_str()));
-			} else {
-				component2->setLink((unsigned int) atoi(_valueLink[i + 1].c_str()), *component1, (unsigned int) atoi(_valueLink[i].c_str()));
-			}
-		}
+		setLinks();
 		verifEmptyArg();
 		chipsetsOrLinksIsNotInFile();
 	} else {
-		throw nts::errorParsing("Bad file given as parameter : ", _fileName);
+		throw nts::errorParsing("Bad file given as parameter : ",
+			_fileName);
 	}
 }
 
@@ -391,10 +415,10 @@ nts::IComponent *nts::Parsing::create(std::string const &type,
 	if (component == nullptr)
 		throw nts::errorParsing("Unknow type: ", type);
 
-
-	if (!value.empty() && (type == "input" || type == "clock"
-		|| type == "true" || type == "false")) {
-		((nts::Input *) component)->setValue(transformValue(value));
+	if (!value.empty() &&
+		(type == "input" || type == "clock" || type == "true" ||
+			type == "false")) {
+		((nts::Input *)component)->setValue(transformValue(value));
 	}
 	return component->copy();
 }
