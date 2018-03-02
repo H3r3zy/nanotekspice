@@ -22,8 +22,8 @@
 #include "CD4514BC.hpp"
 #include "Output.hpp"
 
-static const std::string AUTHORIZED_VALUE("01");
-static const std::vector<std::string> TYPES({
+const std::string AUTHORIZED_VALUE("01");
+const std::vector<std::string> TYPES({
 	"input", "output", "clock", "true", "false", "2716", "4001", "4008",
 	"4011", "4013", "4017", "4030", "4040", "4069", "4071", "4081",
 	"4094", "4503", "4512", "4514",	"i4004", "mk4801"
@@ -65,14 +65,14 @@ void nts::Parsing::verifEqualArgument(std::string &arg)
 
 	if (equal == std::string::npos)
 		throw nts::errorParsing("Argument need value : ", arg);
-	if (equal != posEqual || (equal != std::string::npos && posEqual != std::string::npos))
+	if (equal != posEqual || (equal == std::string::npos && posEqual == std::string::npos))
 		throw nts::errorParsing("Multi equal is not allowed : ", arg);
 }
 
 std::string nts::Parsing::stockNameArg(std::string &arg)
 {
 	long unsigned int equal = arg.find('=');
-	std::string name = "";
+	std::string name;
 
 	if (equal != std::string::npos)
 		name = arg.substr(0, equal);
@@ -83,8 +83,8 @@ std::string nts::Parsing::stockValueArg(std::string &arg)
 {
 	long unsigned int equal = arg.find('=');
 
-	std::string value = "";
-	if (equal == std::string::npos) {
+	std::string value;
+	if (equal != std::string::npos) {
 		value = arg.substr(equal + 1, arg.size() - (equal + 1));
 		if (AUTHORIZED_VALUE.find(value) == std::string::npos)
 			throw nts::errorParsing("Value is 0 or 1 not ", value);
