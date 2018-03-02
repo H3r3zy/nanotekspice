@@ -79,7 +79,7 @@ std::string nts::Parsing::stockNameArg(std::string &arg)
 	return (name);
 }
 
-std::string nts::Parsing::stockValueArg(std::string &arg)
+std::string nts::Parsing::stockValueArg(std::string &arg)	
 {
 	long unsigned int equal = arg.find('=');
 
