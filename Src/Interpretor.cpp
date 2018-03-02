@@ -88,7 +88,7 @@ void Interpretor::run()
 		if (loop)
 			line = "simulate";
 		else {
-			std::cout << ">";
+			std::cout << "> ";
 			if (!std::getline(std::cin, line))
 				end = true;
 		}
