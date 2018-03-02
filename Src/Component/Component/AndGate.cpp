@@ -32,11 +32,9 @@ nts::AndGate& nts::AndGate::operator=(nts::AndGate const &data)
 
 nts::Tristate nts::AndGate::compute(size_t pin)
 {
-	std::cout << pin << std::endl;
 	if (pin == 3) {
 		nts::Tristate value1 = getPins(1);
 		nts::Tristate value2 = getPins(2);
-		std::cout << value1 << " " << value2 << std::endl;
 		if ((ISUNDEFINED(value1) && ISUNDEFINED(value2)) ||
 			(ISUNDEFINED(value1) && ISTRUE(value2)) ||
 			(ISTRUE(value1) && ISUNDEFINED(value2))) {

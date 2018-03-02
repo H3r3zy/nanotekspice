@@ -1,12 +1,9 @@
+File Edit Options Buffers Tools Help
 # Admiral Business Machines 1954-2042 # One and gate
-
 .chipsets:
-clock	a(1)
-clock	b(1)
-output	s
-4008	gate
+input a
+output s
+
 .links:
-a:1	gate:1
-b:1	gate:2
-s:1	gate:3
+a:1     s:1
 
