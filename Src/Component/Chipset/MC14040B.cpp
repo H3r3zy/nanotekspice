@@ -26,7 +26,7 @@ static const std::map<unsigned int, unsigned int> OUTPUTINPUT = {
 
 nts::MC14040B::MC14040B()
 {
-	_pin_number = 14;
+	_pin_number = 16;
 }
 
 
@@ -37,6 +37,9 @@ nts::MC14040B::MC14040B(nts::MC14040B const &data)
 	_pins = data._pins;
 	_res = data._res;
 	_counter = data._counter;
+	lastClock = data.lastClock;
+	tmp = data.tmp;
+	first = data.first;
 }
 
 nts::MC14040B& nts::MC14040B::operator=(nts::MC14040B const &data)
@@ -46,6 +49,9 @@ nts::MC14040B& nts::MC14040B::operator=(nts::MC14040B const &data)
 	_pins = data._pins;
 	_res = data._res;
 	_counter = data._counter;
+	lastClock = data.lastClock;
+	tmp = data.tmp;
+	first = data.first;
 	return *this;
 }
 
@@ -67,7 +73,7 @@ nts::Tristate nts::MC14040B::compute(size_t pin)
 			_res = inhib;
 			tmp = clock;
 		} else {
-			if ((clock == nts::FALSE && c == 0 && !first) || (first && clock == nts::FALSE && lastClock != nts::UNDEFINED)) {
+			if (clock == nts::FALSE && lastClock == nts::TRUE && ((c == 0 && !first) || (first))) {
 				_counter++;
 				first = false;
 			}

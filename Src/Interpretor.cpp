@@ -106,5 +106,6 @@ void Interpretor::run()
 		} catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
+		line.clear();
 	}
 }
