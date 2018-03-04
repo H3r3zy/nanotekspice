@@ -70,7 +70,8 @@ nts::Tristate nts::MC14040B::compute(size_t pin)
 		pin == 6 || pin == 7 || pin == 9 || pin == 12 || pin == 13 ||
 		pin == 14 || pin == 15) {
 		if (inhib != nts::FALSE) {
-			_res = inhib;
+			_res = nts::FALSE;
+			_counter = 0;
 			tmp = clock;
 		} else {
 			if (clock == nts::FALSE && lastClock == nts::TRUE && ((c == 0 && !first) || (first))) {
