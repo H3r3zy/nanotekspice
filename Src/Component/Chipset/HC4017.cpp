@@ -67,23 +67,17 @@ nts::Tristate nts::HC4017::compute(size_t pin)
 		if (inhib == nts::TRUE) {
 			tmp = clock;
 			_counter = 1;
-			if (pin == 3)
-				return nts::TRUE;
-			else
-				return nts::FALSE;
-		} else {
-			if (clock == nts::TRUE && lastClock == nts::FALSE && ((c == 0 && !first) || (first))) {
-				_counter++;
-				first = false;
-			}
-			if (_counter > 10)
-				_counter = 0;
-			if ((_counter != 0 && OUTPUTINPUT.at(_counter) == pin) || (_counter < 6 && pin == 12 	))
-				_res = nts::TRUE;
-			else
-				_res = nts::FALSE;
-			tmp = clock;
+		} else if (clock == nts::TRUE && lastClock == nts::FALSE && ((c == 0 && !first) || (first))) {
+			_counter++;
+			first = false;
 		}
+		if (_counter > 10)
+			_counter = 1;
+		if ((_counter != 0 && OUTPUTINPUT.at(_counter) == pin) || (_counter < 6 && pin == 12 	))
+			_res = nts::TRUE;
+		else
+			_res = nts::FALSE;
+		tmp = clock;
 	} else {
 		_res = getPins(pin);
 	}

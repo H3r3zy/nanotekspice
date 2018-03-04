@@ -10,18 +10,18 @@
 #include "OrGate.hpp"
 
 static const std::map<unsigned int, unsigned int> OUTPUTINPUT = {
-	{9, 0},
-	{7, 1},
-	{6, 2},
-	{5, 3},
-	{3, 4},
-	{2, 5},
-	{4, 6},
-	{13, 7},
-	{12, 8},
-	{14, 9},
+	{1, 11},
 	{15, 10},
-	{1, 11}
+	{14, 9},
+	{12, 8},
+	{13, 7},
+	{4, 6},
+	{2, 5},
+	{3, 4},
+	{5, 3},
+	{6, 2},
+	{7, 1},
+	{9, 0}
 };
 
 nts::MC14040B::MC14040B()
@@ -82,7 +82,7 @@ nts::Tristate nts::MC14040B::compute(size_t pin)
 				_counter = 0;
 			std::string bin = std::bitset<12>(_counter).to_string();
 			if (OUTPUTINPUT.at((unsigned int) pin) < bin.size() &&
-				bin[OUTPUTINPUT.at((unsigned int) pin)] == '1')
+				bin[11 - OUTPUTINPUT.at((unsigned int) pin)] == '1')
 				_res = nts::TRUE;
 			else
 				_res = nts::FALSE;

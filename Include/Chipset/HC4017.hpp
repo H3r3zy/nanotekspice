@@ -33,7 +33,7 @@ namespace nts {
 	protected:
 
 	private:
-		unsigned int _counter = 0;
+		unsigned int _counter = 1;
 		nts::Tristate lastClock = nts::UNDEFINED;
 		nts::Tristate tmp = nts::UNDEFINED;
 		bool first = true;
