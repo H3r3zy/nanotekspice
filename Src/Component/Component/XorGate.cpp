@@ -7,12 +7,6 @@
 
 #include "XorGate.hpp"
 
-std::ostream &operator<<(std::ostream &os, nts::XorGate const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::XorGate::XorGate(nts::XorGate const &data)
 {
 	_pin_number = data._pin_number;

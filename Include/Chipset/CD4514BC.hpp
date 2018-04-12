@@ -88,6 +88,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::CD4514BC const &);
-
 #endif //CPP_NANOTEKSPICE_CD4514BC_HPP

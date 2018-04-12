@@ -14,13 +14,14 @@ output	o4
 output	o5
 4069	gate
 
+
     # lol #
 
     ## lol
 
         ##
-.links:
-    i0:1	gate:1
+.lis:
+    i0:1	gate:1  
 i1:1	gate:3
 i2:1	gate:5
 i3:1	gate:9

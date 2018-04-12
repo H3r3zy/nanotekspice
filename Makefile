@@ -39,7 +39,8 @@ SRCS	= 	Src/Main.cpp		\
 		Src/Interpretor.cpp \
 		Src/Executor.cpp	\
 		Src/Component/Chipset/MC14040B.cpp	\
-		Src/Component/Chipset/HC4017.cpp
+		Src/Component/Chipset/HC4017.cpp	\
+		Src/Component/Chipset/CD4013BC.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
@@ -62,5 +63,12 @@ re: fclean all
 debug: CPPFLAGS += -ggdb3
 
 debug: re
+
+tests_run:
+		make -C tests re
+		./tests/test
+
+coverage:	tests_run
+	make -C tests coverage
 
 .PHONY: all clean fclean re debug

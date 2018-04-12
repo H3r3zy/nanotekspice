@@ -45,7 +45,7 @@ namespace nts {
 		nts::Tristate value2Tristate(std::string &value) const;
 		nts::Tristate value2Tristate(char value) const;
 
-		unsigned int _maxUsePerCycle = 1000;
+		unsigned int _maxUsePerCycle = 8000;
 		unsigned int cycle = 0;
 	private:
 

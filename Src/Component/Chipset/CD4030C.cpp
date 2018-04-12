@@ -28,10 +28,10 @@ nts::CD4030C::~CD4030C()
 
 nts::CD4030C::CD4030C(nts::CD4030C const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::XorGate(*(nts::XorGate *) data.gate1);
+	gate2 = new nts::XorGate(*(nts::XorGate *) data.gate2);
+	gate3 = new nts::XorGate(*(nts::XorGate *) data.gate3);
+	gate4 = new nts::XorGate(*(nts::XorGate *) data.gate4);
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
@@ -41,22 +41,16 @@ nts::CD4030C::CD4030C(nts::CD4030C const &data)
 
 nts::CD4030C& nts::CD4030C::operator=(nts::CD4030C const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::XorGate(*(nts::XorGate *) data.gate1);
+	gate2 = new nts::XorGate(*(nts::XorGate *) data.gate2);
+	gate3 = new nts::XorGate(*(nts::XorGate *) data.gate3);
+	gate4 = new nts::XorGate(*(nts::XorGate *) data.gate4);
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
 	init();
 	return *this;
-}
-
-std::ostream &operator<<(std::ostream &os, nts::CD4030C const &data)
-{
-	data.dump();
-	return os;
 }
 
 nts::Tristate nts::CD4030C::compute(size_t pin)

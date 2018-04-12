@@ -32,10 +32,10 @@ nts::HEF4001B::HEF4001B(nts::HEF4001B const &data)
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::NorGate(*(nts::NorGate *) data.gate1);
+	gate2 = new nts::NorGate(*(nts::NorGate *) data.gate2);
+	gate3 = new nts::NorGate(*(nts::NorGate *) data.gate3);
+	gate4 = new nts::NorGate(*(nts::NorGate *) data.gate4);
 	init();
 }
 
@@ -45,18 +45,12 @@ nts::HEF4001B& nts::HEF4001B::operator=(nts::HEF4001B const &data)
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::NorGate(*(nts::NorGate *) data.gate1);
+	gate2 = new nts::NorGate(*(nts::NorGate *) data.gate2);
+	gate3 = new nts::NorGate(*(nts::NorGate *) data.gate3);
+	gate4 = new nts::NorGate(*(nts::NorGate *) data.gate4);
 	init();
 	return *this;
-}
-
-std::ostream &operator<<(std::ostream &os, nts::HEF4001B const &data)
-{
-	data.dump();
-	return os;
 }
 
 nts::Tristate nts::HEF4001B::compute(size_t pin)

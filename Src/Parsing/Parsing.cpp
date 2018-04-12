@@ -23,6 +23,7 @@
 #include "MC14040B.hpp"
 #include "HC4017.hpp"
 #include "Output.hpp"
+#include "CD4013BC.hpp"
 
 const std::string AUTHORIZED_VALUE("01");
 
@@ -43,7 +44,7 @@ nts::Parsing::Parsing(std::string &fileName, int &ac, char **&av) : _fileName(
 	factory.add("4001", new nts::HEF4001B());
 	factory.add("4008", new nts::CD4008BMS());
 	factory.add("4011", new nts::CD4011B());
-	//factory.add("4013", new nts::CD4011B());
+	factory.add("4013", new nts::CD4013BC());
 	factory.add("4017", new nts::HC4017());
 	factory.add("4030", new nts::CD4030C());
 	factory.add("4040", new nts::MC14040B());
@@ -67,8 +68,7 @@ void nts::Parsing::verifEqualArgument(std::string &arg)
 
 	if (equal == std::string::npos)
 		throw nts::errorParsing("Argument need value : ", arg);
-	if (equal != posEqual ||
-		(equal == std::string::npos && posEqual == std::string::npos))
+	if (equal != posEqual)
 		throw nts::errorParsing("Multi equal is not allowed : ", arg);
 }
 

@@ -36,3 +36,31 @@ Test(HCF4081B, TruthTable, .init = cr_redirect_stdout)
 	cr_assert_eq(hcf4081b.compute(11), nts::TRUE,
 		"Assert4: expected True");
 }
+
+
+Test(HCF4081B, dump, .init = cr_redirect_stdout)
+{
+nts::HCF4081B gate;
+gate.dump();
+
+cr_assert_stdout_eq_str("HCF4081B Chipset\n", "Dump error");
+}
+
+Test(HCF4081B, copy, .init = cr_redirect_stdout)
+{
+auto c1 = new nts::HCF4081B();
+auto c2 = c1->copy();
+
+cr_assert_neq(c1, c2);
+
+delete c1;
+delete c2;
+}
+
+Test(HCF4081B, equalConstructor, .init = cr_redirect_stdout)
+{
+nts::HCF4081B c1;
+nts::HCF4081B c2;
+c2 = c1;
+cr_assert_neq(&c1, &c2);
+}

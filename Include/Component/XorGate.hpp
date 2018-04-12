@@ -41,6 +41,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::XorGate const &);
-
 #endif //CPP_NANOTEKSPICE_XORGATE_HPP

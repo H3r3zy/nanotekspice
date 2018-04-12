@@ -48,3 +48,29 @@ Test(RSNorLatchComponent, TruthTable, .init = cr_redirect_stdout)
 	testRSNorLatchComponent(iUndefined, iTrue, nts::UNDEFINED, nts::UNDEFINED);
 	testRSNorLatchComponent(iUndefined, iUndefined, nts::UNDEFINED, nts::UNDEFINED);
 }
+
+Test(RSNorLatchComponent, dump, .init = cr_redirect_stdout)
+{
+component.dump();
+
+cr_assert_stdout_eq_str("RSNorLatch Component\n", "Dump error");
+}
+
+Test(RSNorLatchComponent, copy, .init = cr_redirect_stdout)
+{
+auto c1 = new nts::RSNorLatchComponent();
+auto c2 = c1->copy();
+
+cr_assert_neq(c1, c2);
+
+delete c1;
+delete c2;
+}
+
+Test(RSNorLatchComponent, equalConstructor, .init = cr_redirect_stdout)
+{
+nts::RSNorLatchComponent c1;
+nts::RSNorLatchComponent c2;
+c2 = c1;
+cr_assert_neq(&c1, &c2);
+}

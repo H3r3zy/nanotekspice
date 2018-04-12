@@ -31,12 +31,6 @@ nts::Clock& nts::Clock::operator=(nts::Clock const &data)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::Clock const &data)
-{
-	data.dump();
-	return os;
-}
-
 void nts::Clock::dump() const
 {
 	std::cout << "Clock: " << tristate2Value(_value) << std::endl;

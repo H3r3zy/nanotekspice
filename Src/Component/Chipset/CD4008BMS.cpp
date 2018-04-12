@@ -29,35 +29,29 @@ nts::CD4008BMS::~CD4008BMS()
 
 nts::CD4008BMS::CD4008BMS(nts::CD4008BMS const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate1);
+	gate2 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate2);
+	gate3 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate3);
+	gate4 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate4);
 	_pin_number = data._pin_number;
-	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
+	_pinsArgument = data._pinsArgument;
 	_res = data._res;
 	init();
 }
 
 nts::CD4008BMS& nts::CD4008BMS::operator=(nts::CD4008BMS const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate1);
+	gate2 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate2);
+	gate3 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate3);
+	gate4 = new nts::FullAdderComponent(*(nts::FullAdderComponent *) data.gate4);
 	_pin_number = data._pin_number;
-	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
+	_pinsArgument = data._pinsArgument;
 	_res = data._res;
 	init();
 	return *this;
-}
-
-std::ostream &operator<<(std::ostream &os, nts::CD4008BMS const &data)
-{
-	data.dump();
-	return os;
 }
 
 nts::Tristate nts::CD4008BMS::compute(size_t pin)

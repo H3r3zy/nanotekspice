@@ -41,6 +41,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::NorGate const &);
-
 #endif //CPP_NANOTEKSPICE_NORGATE_HPP

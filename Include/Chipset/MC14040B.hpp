@@ -44,6 +44,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::MC14040B const &);
-
 #endif //CPP_NANOTEKSPICE_MC14040B_HPP

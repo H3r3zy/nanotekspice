@@ -36,3 +36,31 @@ Test(CD4011B, TruthTable, .init = cr_redirect_stdout)
 	cr_assert_eq(cd4011b.compute(11), nts::FALSE,
 		"Assert4: expected False");
 }
+
+
+Test(CD4011B, dump, .init = cr_redirect_stdout)
+{
+nts::CD4011B gate;
+gate.dump();
+
+cr_assert_stdout_eq_str("CD4011B Chipset\n", "Dump error");
+}
+
+Test(CD4011B, copy, .init = cr_redirect_stdout)
+{
+nts::CD4011B *c1 = new nts::CD4011B();
+auto c2 = c1->copy();
+
+cr_assert_neq(c1, c2);
+
+delete c1;
+delete c2;
+}
+
+Test(CD4011B, equalConstructor, .init = cr_redirect_stdout)
+{
+nts::CD4011B c1;
+nts::CD4011B c2;
+c2 = c1;
+cr_assert_neq(&c1, &c2);
+}

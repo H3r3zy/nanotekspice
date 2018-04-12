@@ -32,3 +32,31 @@ Test(CD4069UBC, TruthTable, .init = cr_redirect_stdout)
 	cr_assert_eq(cd4069ubc.compute(6), nts::UNDEFINED,
 		"Assert3: expected Undefined");
 }
+
+
+Test(CD4069UBC, dump, .init = cr_redirect_stdout)
+{
+nts::CD4069UBC gate;
+gate.dump();
+
+cr_assert_stdout_eq_str("CD4069UBC Chipset\n", "Dump error");
+}
+
+Test(CD4069UBC, copy, .init = cr_redirect_stdout)
+{
+nts::CD4069UBC *c1 = new nts::CD4069UBC();
+auto c2 = c1->copy();
+
+cr_assert_neq(c1, c2);
+
+delete c1;
+delete c2;
+}
+
+Test(CD4069UBC, equalConstructor, .init = cr_redirect_stdout)
+{
+nts::CD4069UBC c1;
+nts::CD4069UBC c2;
+c2 = c1;
+cr_assert_neq(&c1, &c2);
+}

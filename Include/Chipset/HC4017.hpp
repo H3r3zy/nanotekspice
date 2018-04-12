@@ -40,6 +40,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::HC4017 const &);
-
 #endif //CPP_NANOTEKSPICE_HC4017_HPP

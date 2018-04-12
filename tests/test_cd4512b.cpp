@@ -332,3 +332,31 @@ Test(CD4512B, TruthTable, .init = cr_redirect_stdout)
 		nts::TRUE);
 	// 44
 }
+
+
+Test(CD4512B, dump, .init = cr_redirect_stdout)
+{
+nts::CD4512B gate;
+gate.dump();
+
+cr_assert_stdout_eq_str("CD4512B Chipset\n", "Dump error");
+}
+
+Test(CD4512B, copy, .init = cr_redirect_stdout)
+{
+nts::CD4512B *c1 = new nts::CD4512B();
+auto c2 = c1->copy();
+
+cr_assert_neq(c1, c2);
+
+delete c1;
+delete c2;
+}
+
+Test(CD4512B, equalConstructor, .init = cr_redirect_stdout)
+{
+nts::CD4512B c1;
+nts::CD4512B c2;
+c2 = c1;
+cr_assert_neq(&c1, &c2);
+}

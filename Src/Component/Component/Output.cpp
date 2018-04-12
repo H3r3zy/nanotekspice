@@ -29,12 +29,6 @@ nts::Output& nts::Output::operator=(nts::Output const &data)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::Output const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Tristate nts::Output::compute(size_t pin)
 {
 	(void) pin;

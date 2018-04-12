@@ -55,12 +55,6 @@ nts::MC14040B& nts::MC14040B::operator=(nts::MC14040B const &data)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::MC14040B const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Tristate nts::MC14040B::compute(size_t pin)
 {
 	int c = cycle;

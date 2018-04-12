@@ -41,6 +41,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::FullAdderComponent const &);
-
 #endif //CPP_NANOTEKSPICE_FULLADDERCOMPONENT_HPP

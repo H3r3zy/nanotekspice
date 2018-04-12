@@ -32,10 +32,10 @@ nts::HEF4071B::HEF4071B(nts::HEF4071B const &data)
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::OrGate(*(nts::OrGate *) data.gate1);
+	gate2 = new nts::OrGate(*(nts::OrGate *) data.gate2);
+	gate3 = new nts::OrGate(*(nts::OrGate *) data.gate3);
+	gate4 = new nts::OrGate(*(nts::OrGate *) data.gate4);
 	init();
 }
 
@@ -45,18 +45,12 @@ nts::HEF4071B& nts::HEF4071B::operator=(nts::HEF4071B const &data)
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::OrGate(*(nts::OrGate *) data.gate1);
+	gate2 = new nts::OrGate(*(nts::OrGate *) data.gate2);
+	gate3 = new nts::OrGate(*(nts::OrGate *) data.gate3);
+	gate4 = new nts::OrGate(*(nts::OrGate *) data.gate4);
 	init();
 	return *this;
-}
-
-std::ostream &operator<<(std::ostream &os, nts::HEF4071B const &data)
-{
-	data.dump();
-	return os;
 }
 
 nts::Tristate nts::HEF4071B::compute(size_t pin)

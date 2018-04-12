@@ -7,12 +7,6 @@
 
 #include "AndGate.hpp"
 
-std::ostream &operator<<(std::ostream &os, nts::AndGate const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::AndGate::AndGate(nts::AndGate const &data)
 {
 	_pin_number = data._pin_number;

@@ -46,6 +46,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::HCF4081B const &);
-
 #endif //CPP_NANOTEKSPICE_HCF4081B_HPP

@@ -28,10 +28,10 @@ nts::CD4011B::~CD4011B()
 
 nts::CD4011B::CD4011B(nts::CD4011B const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::NandGate(*(nts::NandGate *) data.gate1);
+	gate2 = new nts::NandGate(*(nts::NandGate *) data.gate2);
+	gate3 = new nts::NandGate(*(nts::NandGate *) data.gate3);
+	gate4 = new nts::NandGate(*(nts::NandGate *) data.gate4);
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
@@ -41,22 +41,16 @@ nts::CD4011B::CD4011B(nts::CD4011B const &data)
 
 nts::CD4011B& nts::CD4011B::operator=(nts::CD4011B const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
+	gate1 = new nts::NandGate(*(nts::NandGate *) data.gate1);
+	gate2 = new nts::NandGate(*(nts::NandGate *) data.gate2);
+	gate3 = new nts::NandGate(*(nts::NandGate *) data.gate3);
+	gate4 = new nts::NandGate(*(nts::NandGate *) data.gate4);
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
 	init();
 	return *this;
-}
-
-std::ostream &operator<<(std::ostream &os, nts::CD4011B const &data)
-{
-	data.dump();
-	return os;
 }
 
 nts::Tristate nts::CD4011B::compute(size_t pin)

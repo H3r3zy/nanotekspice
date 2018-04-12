@@ -47,6 +47,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::CD4008BMS const &);
-
 #endif //CPP_NANOTEKSPICE_CD4008BMS_HPP

@@ -48,7 +48,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::CD4069UBC const &);
-
-
 #endif //CPP_NANOTEKSPICE_CD4069UBC_HPP

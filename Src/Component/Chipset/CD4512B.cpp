@@ -53,12 +53,6 @@ nts::CD4512B& nts::CD4512B::operator=(nts::CD4512B const &data)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::CD4512B const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Tristate nts::CD4512B::compute(size_t pin)
 {
 	if (pin == 14) {
@@ -85,7 +79,7 @@ nts::Tristate nts::CD4512B::compute(size_t pin)
 
 void nts::CD4512B::dump() const
 {
-	std::cout << "CD4512B Component" << std::endl;
+	std::cout << "CD4512B Chipset" << std::endl;
 }
 
 nts::CD4512B *nts::CD4512B::copy() const

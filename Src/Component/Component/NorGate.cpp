@@ -7,12 +7,6 @@
 
 #include "NorGate.hpp"
 
-std::ostream &operator<<(std::ostream &os, nts::NorGate const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::NorGate::NorGate(nts::NorGate const &data)
 {
 	_pin_number = data._pin_number;

@@ -36,3 +36,30 @@ Test(HEF4001B, TruthTable, .init = cr_redirect_stdout)
 	cr_assert_eq(hef4001b.compute(11), nts::FALSE,
 		"Assert4: expected False");
 }
+
+Test(HEF4001B, dump, .init = cr_redirect_stdout)
+{
+nts::HEF4001B gate;
+gate.dump();
+
+cr_assert_stdout_eq_str("HEF4001B Chipset\n", "Dump error");
+}
+
+Test(HEF4001B, copy, .init = cr_redirect_stdout)
+{
+auto c1 = new nts::HEF4001B();
+auto c2 = c1->copy();
+
+cr_assert_neq(c1, c2);
+
+delete c1;
+delete c2;
+}
+
+Test(HEF4001B, equalConstructor, .init = cr_redirect_stdout)
+{
+nts::HEF4001B c1;
+nts::HEF4001B c2;
+c2 = c1;
+cr_assert_neq(&c1, &c2);
+}

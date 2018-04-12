@@ -46,7 +46,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::CD4030C const &);
-
-
 #endif //CPP_NANOTEKSPICE_CD4030C_HPP

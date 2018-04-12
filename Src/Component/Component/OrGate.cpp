@@ -7,12 +7,6 @@
 
 #include "OrGate.hpp"
 
-std::ostream &operator<<(std::ostream &os, nts::OrGate const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::OrGate::OrGate(nts::OrGate const &data)
 {
 	_pin_number = data._pin_number;

@@ -48,12 +48,6 @@ nts::CD4514BC& nts::CD4514BC::operator=(nts::CD4514BC const &data)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::CD4514BC const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Tristate nts::CD4514BC::compute(size_t pin)
 {
 	if (pin == 4 || pin == 5 || pin == 6 || pin == 7 || pin == 8 || pin == 9 || pin == 10 || pin == 11 ||

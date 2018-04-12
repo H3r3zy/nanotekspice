@@ -51,12 +51,6 @@ nts::HC4017& nts::HC4017::operator=(nts::HC4017 const &data)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::HC4017 const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Tristate nts::HC4017::compute(size_t pin)
 {
 	int c = cycle;

@@ -78,3 +78,9 @@ void nts::AbstractComponent::reset()
 {
 	cycle = 0;
 }
+
+std::ostream &operator<<(std::ostream &os, nts::AbstractComponent const &data)
+{
+	data.dump();
+	return os;
+}

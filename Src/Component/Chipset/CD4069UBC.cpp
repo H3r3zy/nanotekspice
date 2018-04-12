@@ -30,12 +30,12 @@ nts::CD4069UBC::~CD4069UBC()
 
 nts::CD4069UBC& nts::CD4069UBC::operator=(nts::CD4069UBC const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
-	gate5 = data.gate5;
-	gate6 = data.gate6;
+	gate1 = new nts::NotGate(*(nts::NotGate *) data.gate1);
+	gate2 = new nts::NotGate(*(nts::NotGate *) data.gate2);
+	gate3 = new nts::NotGate(*(nts::NotGate *) data.gate3);
+	gate4 = new nts::NotGate(*(nts::NotGate *) data.gate4);
+	gate5 = new nts::NotGate(*(nts::NotGate *) data.gate5);
+	gate6 = new nts::NotGate(*(nts::NotGate *) data.gate6);
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
@@ -46,23 +46,17 @@ nts::CD4069UBC& nts::CD4069UBC::operator=(nts::CD4069UBC const &data)
 
 nts::CD4069UBC::CD4069UBC(nts::CD4069UBC const &data)
 {
-	gate1 = data.gate1;
-	gate2 = data.gate2;
-	gate3 = data.gate3;
-	gate4 = data.gate4;
-	gate5 = data.gate5;
-	gate6 = data.gate6;
+	gate1 = new nts::NotGate(*(nts::NotGate *) data.gate1);
+	gate2 = new nts::NotGate(*(nts::NotGate *) data.gate2);
+	gate3 = new nts::NotGate(*(nts::NotGate *) data.gate3);
+	gate4 = new nts::NotGate(*(nts::NotGate *) data.gate4);
+	gate5 = new nts::NotGate(*(nts::NotGate *) data.gate5);
+	gate6 = new nts::NotGate(*(nts::NotGate *) data.gate6);
 	_pin_number = data._pin_number;
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
 	init();
-}
-
-std::ostream &operator<<(std::ostream &os, nts::CD4069UBC const &data)
-{
-	data.dump();
-	return os;
 }
 
 nts::Tristate nts::CD4069UBC::compute(size_t pin)

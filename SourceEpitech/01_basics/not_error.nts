@@ -12,7 +12,8 @@ output	o2
 output	o3
 output	o4
 output	o5
-4069	gate
+6000	gate
+
 
     # lol #
 
@@ -20,7 +21,7 @@ output	o5
 
         ##
 .links:
-    i0:1	gate:1
+    i0:1	gate:1  
 i1:1	gate:3
 i2:1	gate:5
 i3:1	gate:9

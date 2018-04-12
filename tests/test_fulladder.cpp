@@ -81,3 +81,30 @@ Test(FullAdder, TruthTable, .init = cr_redirect_stdout)
 
 	testFullAdder(iUndefined, iUndefined, iUndefined, nts::UNDEFINED, nts::UNDEFINED);
 }
+
+
+Test(FullAdder, dump, .init = cr_redirect_stdout)
+{
+adder.dump();
+
+cr_assert_stdout_eq_str("FullAdder Component\n", "Dump error");
+}
+
+Test(FullAdder, copy, .init = cr_redirect_stdout)
+{
+auto c1 = new nts::FullAdderComponent();
+auto c2 = c1->copy();
+
+cr_assert_neq(c1, c2);
+
+delete c1;
+delete c2;
+}
+
+Test(FullAdder, equalConstructor, .init = cr_redirect_stdout)
+{
+nts::FullAdderComponent c1;
+nts::FullAdderComponent c2;
+c2 = c1;
+cr_assert_neq(&c1, &c2);
+}

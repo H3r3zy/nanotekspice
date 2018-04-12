@@ -7,12 +7,6 @@
 
 #include "Input.hpp"
 
-std::ostream &operator<<(std::ostream &os, nts::Input const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Input::Input(nts::Input const &data)
 {
 	_value = data._value;

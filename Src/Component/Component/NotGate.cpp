@@ -29,12 +29,6 @@ nts::NotGate& nts::NotGate::operator=(nts::NotGate const &data)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::NotGate const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Tristate nts::NotGate::compute(size_t pin)
 {
 	if (pin == 2) {

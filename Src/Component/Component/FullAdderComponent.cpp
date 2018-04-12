@@ -32,12 +32,6 @@ nts::FullAdderComponent& nts::FullAdderComponent::operator=(
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, nts::FullAdderComponent const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::Tristate nts::FullAdderComponent::compute(size_t pin)
 {
 	if (pin == 4) {
@@ -81,7 +75,7 @@ nts::Tristate nts::FullAdderComponent::compute(size_t pin)
 
 void nts::FullAdderComponent::dump() const
 {
-	std::cout << "Full Adder Component" << std::endl;
+	std::cout << "FullAdder Component" << std::endl;
 }
 
 nts::FullAdderComponent *nts::FullAdderComponent::copy() const

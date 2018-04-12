@@ -46,6 +46,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::HEF4071B const &);
-
 #endif //CPP_NANOTEKSPICE_HEF4071B_HPP

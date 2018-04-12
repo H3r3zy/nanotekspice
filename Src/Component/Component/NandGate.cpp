@@ -7,12 +7,6 @@
 
 #include "NandGate.hpp"
 
-std::ostream &operator<<(std::ostream &os, nts::NandGate const &data)
-{
-	data.dump();
-	return os;
-}
-
 nts::NandGate::NandGate(nts::NandGate const &data)
 {
 	_pin_number = data._pin_number;

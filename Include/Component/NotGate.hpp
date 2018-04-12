@@ -34,6 +34,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::NotGate const &);
-
 #endif //CPP_NANOTEKSPICE_NOTGATE_HPP

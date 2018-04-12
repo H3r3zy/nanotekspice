@@ -35,6 +35,4 @@ namespace nts {
 	};
 }
 
-std::ostream &operator<<(std::ostream &os, nts::AndGate const &);
-
 #endif //CPP_NANOTEKSPICE_ANDGATE_HPP

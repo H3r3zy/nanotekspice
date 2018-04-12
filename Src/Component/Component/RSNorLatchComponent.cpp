@@ -21,7 +21,7 @@ nts::RSNorLatchComponent::RSNorLatchComponent(nts::RSNorLatchComponent const &da
 	_pinsArgument = data._pinsArgument;
 	_pins = data._pins;
 	_res = data._res;
-	_not = data._not;
+	_not = new nts::NotGate(*(nts::NotGate *) data._not);
 	init();
 }
 
@@ -34,6 +34,8 @@ nts::RSNorLatchComponent& nts::RSNorLatchComponent::operator=(
 	_pins = data._pins;
 	_res = data._res;
 	_not = data._not;
+	_not = new nts::NotGate(*(nts::NotGate *) data._not);
+
 	init();
 	return *this;
 }
@@ -41,12 +43,6 @@ nts::RSNorLatchComponent& nts::RSNorLatchComponent::operator=(
 nts::RSNorLatchComponent::~RSNorLatchComponent()
 {
 	delete _not;
-}
-
-std::ostream &operator<<(std::ostream &os, nts::RSNorLatchComponent const &data)
-{
-	data.dump();
-	return os;
 }
 
 nts::Tristate nts::RSNorLatchComponent::compute(size_t pin)
@@ -71,7 +67,7 @@ nts::Tristate nts::RSNorLatchComponent::compute(size_t pin)
 
 void nts::RSNorLatchComponent::dump() const
 {
-	std::cout << "RSNorLatchComponent Component" << std::endl;
+	std::cout << "RSNorLatch Component" << std::endl;
 }
 
 nts::RSNorLatchComponent *nts::RSNorLatchComponent::copy() const
