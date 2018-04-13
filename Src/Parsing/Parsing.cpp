@@ -24,6 +24,7 @@
 #include "HC4017.hpp"
 #include "Output.hpp"
 #include "CD4013BC.hpp"
+#include "CD4094BC.hpp"
 
 const std::string AUTHORIZED_VALUE("01");
 
@@ -51,7 +52,7 @@ nts::Parsing::Parsing(std::string &fileName, int &ac, char **&av) : _fileName(
 	factory.add("4069", new nts::CD4069UBC());
 	factory.add("4071", new nts::HEF4071B());
 	factory.add("4081", new nts::HCF4081B());
-	//factory.add("4094", new nts::4094());
+	factory.add("4094", new nts::CD4094BC());
 	//factory.add("4503", new nts::CD4011B());
 	factory.add("4512", new nts::CD4512B());
 	factory.add("4514", new nts::CD4514BC());
