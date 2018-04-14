@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <functional>
 #include <csignal>
-#include "Parsing.hpp"
+#include "Parsing2.hpp"
 #include "ErrorParsing.hpp"
 #include "Executor.hpp"
 #include "Interpretor.hpp"
@@ -22,7 +22,7 @@ int main(int ac, char **av)
 		return (0);
 	}
 	try {
-		nts::Parsing P(*new std::string(av[1]), ac, av);
+		nts::Parsing P(*new std::string(av[1]), av);
 		Interpretor interpretor(P);
 		interpretor.run();
 	} catch (nts::errorParsing const &message) {

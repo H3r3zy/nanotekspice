@@ -12,7 +12,7 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 #include "ErrorParsing.hpp"
-#include "Parsing.hpp"
+#include "Parsing2.hpp"
 #include <unistd.h>
 #include <exception>
 
@@ -28,32 +28,28 @@ Test(Parsing, test, .init = cr_redirect_stdout)
 	av[6] = strdup("i4=1");
 	av[7] = strdup("i5=1");
 	av[8] = NULL;
-	int ac = 8;
 
-
-	cr_assert_no_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_no_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 	av[7] = NULL;
 
-	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 	av[7] = strdup("i8=1");
-	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 	av[7] = strdup("i5=2");
-	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 	av[7] = strdup("i5");
-	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 	av[7] = strdup("i5=1=2");
-	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 
-	ac=2;
-	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 
 	auto e = new nts::errorParsing("ici", "la");
 	cr_assert_str_eq(e->getIndication().c_str(), "la");
 	cr_assert_str_eq(e->getMessage().c_str(), "ici");
 
-	ac = 8;
 	av[7] = strdup("i5=1");
-	auto p = new nts::Parsing(*new std::string(av[1]), ac, av);
+	auto p = new nts::Parsing(*new std::string(av[1]), av);
 
 	cr_assert_eq(p->getComponents().size(), 13);
 	cr_assert_eq(p->getInputs().size(), 6);
@@ -61,7 +57,7 @@ Test(Parsing, test, .init = cr_redirect_stdout)
 	cr_assert_eq(p->getClocks().size(), 0);
 
 	av[1] = strdup("SourceEpitech/01_basics/not_error.nts");
-	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), ac, av), std::exception);
+	cr_assert_throw(new nts::Parsing(*new std::string(av[1]), av), std::exception);
 
 	delete p;
 }

@@ -5,7 +5,7 @@
 ## Created by martin.januario@epitech.eu
 ##
 
-SRC             =       ../Src/Parsing/Parsing.cpp	\
+SRC             =       ../Src/Parsing/Parsing2.cpp	\
                         ../Src/Parsing/ErrorParsing.cpp	\
                         ../Src/Component/AbstractComponent.cpp	\
                         ../Src/Component/Chipset/CD4008BMS.cpp	\
@@ -33,7 +33,8 @@ SRC             =       ../Src/Parsing/Parsing.cpp	\
                         ../Src/Executor.cpp	\
                         ../Src/Component/Chipset/MC14040B.cpp	\
                         ../Src/Component/Chipset/HC4017.cpp		\
-                        ../Src/Component/Chipset/CD4013BC.cpp
+                        ../Src/Component/Chipset/CD4013BC.cpp	\
+			../Src/Component/Chipset/CD4094BC.cpp
 
 SRC_OBJECT      =       test_and.cpp	\
 			test_or.cpp	\

@@ -12,7 +12,7 @@ CC	= g++
 RM	= rm -f
 
 SRCS	= 	Src/Main.cpp		\
-	  	Src/Parsing/Parsing.cpp	\
+	  	Src/Parsing/Parsing2.cpp	\
 	  	Src/Parsing/ErrorParsing.cpp	\
 		Src/Component/AbstractComponent.cpp	\
 		Src/Component/Chipset/CD4008BMS.cpp	\
